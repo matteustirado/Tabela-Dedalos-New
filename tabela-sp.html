@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tabela de Preços</title>
+    <!-- Google Fonts - Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Meu CSS -->
+    <link rel="stylesheet" href="css/pricing.css">
+    <link rel="stylesheet" href="css/multchrome.css">
+</head>
+<body> 
+    <div class="rotate">
+        <div class="multi">
+                <div class="multichrome-background">
+                <div class="multichrome-light"></div>
+                <div class="multichrome-ambient-1 float-effect-1"></div>
+                <div class="multichrome-ambient-2 float-effect-2"></div>
+                <div class="multichrome-ambient-3 float-effect-3"></div>
+                <canvas id="particleCanvas"></canvas>
+            </div>
+            <div class="triangle-container">
+                <div class="triangle triangle-1"></div>
+                <div class="triangle triangle-2"></div>
+                <div class="triangle triangle-3"></div>
+            </div>
+        </div>
+        <div class="borda">
+            <section id="precos" class="pricing-section">
+                <h2 class="section-title">Preços</h2>
+                <div class="pricing-container">
+                    <div class="pricing-tabs">
+                        <button class="tab-button active" data-tab="segunda">SEGUNDA</button>
+                        <button class="tab-button" data-tab="terça">TERÇA</button>
+                        <button class="tab-button" data-tab="quarta">QUARTA</button>
+                        <button class="tab-button" data-tab="quinta">QUINTA</button>
+                        <button class="tab-button" data-tab="sexta">SEXTA</button>
+                        <button class="tab-button" data-tab="sabado">SABADO</button>
+                        <button class="tab-button" data-tab="domingo">DOMINGO</button>
+                        <button class="tab-button" data-tab="feriados">FERIADOS</button>
+                    </div>
+                    <div class="period-slider">
+                        <div class="period-options">
+                            <div class="period-option active" data-period="manha" data-time="06h às 13h59">
+                                Manhã/Tarde
+                            </div>
+                            <div class="period-option" data-period="tarde" data-time="14h às 19h59">
+                                Tarde/Noite
+                            </div>
+                            <div class="period-option" data-period="noite" data-time="20h às 05h59">
+                                Noite/Madrugada
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pricing-content">
+                        <div class="price-cards">
+                            <div class="price-card">
+                                <h3>Single</h3>
+                                <div class="price-value">R$ <span class="price">50</span></div>
+                                <ul class="price-features">
+                                    <li>Entrada individual</li>
+                                </ul>
+                            </div>
+                            <div class="price-card">
+                                <h3>Mão Amiga</h3>
+                                <div class="price-value">R$ <span class="price">80</span></div>
+                                <ul class="price-features">
+                                    <li>Entrada para duas pessoas</li>
+                                </ul>
+                            </div>
+                            <div class="price-card">
+                                <h3>Marmitex</h3>
+                                <div class="price-value">R$ <span class="price">120</span></div>
+                                <ul class="price-features">
+                                    <li>Entrada para três pessoas</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="price-notes">
+                            <p>* Meia noite de dom para seg vira a tabela de segunda</p>
+                            <p>* Meia noite de sex para sab vira a tabela do fim de semana</p>
+                            <p>** Preços sujeitos a alteração sem aviso prévio</p>
+                        </div>
+                    </div>
+                    <div class="slider-container">
+                        <h2 class="section-title">Promoções disponiveis!</h2>
+                        <div class="slider">
+                            <img src="img/7.png" alt="Imagem provisoria de Promoções">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- Scripts -->
+    <script>
+        setTimeout(() => {
+            location.reload();
+        }, 900000);
+    </script>
+    <script src="script/pricing.js"></script>
+    <script src="script/multchrome.js"></script>
+</body>
+</html>
