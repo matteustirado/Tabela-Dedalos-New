@@ -1,0 +1,102 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+body {
+    background: radial-gradient(
+    circle at center,
+    #0a0a0f 0%, 
+    #1a1a1a 45%, 
+    #28241e 100%
+    );
+    color: #ffffff;
+}
+
+.borda{
+    margin: 150px 150px;
+    margin-left: 170px;
+    padding: 50px 50px 10px 50px;
+    border: 5px solid;
+    border-image: linear-gradient(135deg, #ff0022, #ff4d00, #ffcc00) 1;
+    box-sizing: border-box;
+}
+
+.section-title {
+    max-width: 100%;
+    width: 90%;
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 50px auto;
+    position: relative;
+    background: linear-gradient(135deg, #ff0022, #ff4d00, #ffcc00);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 15px rgba(245, 166, 35, 0.4);
+}
+
+.pricing-tabs {
+    display: flex;
+    justify-content: center;
+    border: 1px solid rgba(245, 166, 35, 0.1);
+    border-radius: 12px;
+    background-color: rgba(10, 10, 15, 0.7);
+    padding: 0.5rem;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 20px;
+    margin: 100px 10px;
+}
+
+.tab-button {
+    padding: 20px;
+    width: 240px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 7px;
+    margin: 0.2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    color: rgba(255, 255, 255, 0.7);
+    background: none;
+    border: none;
+    letter-spacing: 1px;
+}
+
+.tab-button a {
+    text-decoration: none; /* remove o sublinhado */
+    color: inherit;
+}
+
+.tab-button::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    transition: width 0.3s ease;
+}
+
+.tab-button {
+    background: linear-gradient(to right, #ff0022, #ff4d00);
+    color: #ffffff;
+}
+
+h4 {
+    display: flex;
+    justify-content: center;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
