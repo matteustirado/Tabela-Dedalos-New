@@ -24,7 +24,7 @@ body {
 } 
 
 .borda{
-    margin: 120px 50px 120px 50px;
+    margin: 140px 60px 140px 60px;
     padding: 20px;
     border: 5px solid;
     border-image: linear-gradient(135deg, #ff0022, #ff4d00, #ffcc00) 1;
