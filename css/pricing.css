@@ -25,7 +25,7 @@ body {
 
 .borda{
     margin: 95px;
-    padding: 50px;
+    padding: 20px;
     border: 5px solid;
     border-image: linear-gradient(135deg, #ff0022, #ff4d00, #ffcc00) 1;
     box-sizing: border-box;
@@ -33,11 +33,11 @@ body {
 
 .section-title {
     max-width: 100%;
-    width: 90%;
+    margin-right: 20px;
+    margin-left: 10px;
     font-size: 3rem;
     font-weight: 700;
     text-align: center;
-    margin: 0 auto;
     position: relative;
     background: linear-gradient(135deg, #ff0022, #ff4d00, #ffcc00);
     -webkit-background-clip: text;
@@ -234,7 +234,6 @@ body {
 .price-features {
     list-style: none;
     padding: 0;
-    margin: 1.5rem 0;
 }
 
 .price-features li {
@@ -245,7 +244,6 @@ body {
 
 .price-notes {
     text-align: center;
-    margin-left: 2rem;
 }
 
 .price-notes p {
@@ -256,28 +254,33 @@ body {
 }
 
 .slider-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centraliza também verticalmente */
+    width: 400px;
     position: relative;
-    max-width: 100%;
-    margin: auto;
     overflow: hidden;
-    border-radius: 10px;
-}
-
-.slider-container h2{
-    margin-left: 2rem;
+    border-radius: 10px; /* opcional: deixar com cantinhos arredondados */
 }
 
 .slider {
-    display: flex;
     width: 100%;
-    justify-content: space-around;
+    height: 100%;
+    position: relative;
 }
 
 .slider img {
-    display: flex;
-    width: 400px;
+    position: absolute;
+    margin-top: 95px;
+    height: 550px;
+    object-fit: cover;
+    transition: opacity 1s ease-in-out;
 }
 
-.slider img.active {
-    display: block;
+#slider-terca, #slider-quarta, #slider-quinta, #slider-sexta, #slider-sabado, #slider-domingo {
+    display: none; /* Todos os sliders começam invisíveis */
+}
+
+#slider-segunda {
+    display: flex;
 }

@@ -1,10 +1,12 @@
+@media (max-width: 1024px) and (max-height: 600px) {
+    
 * {
     font-family: 'Poppins', sans-serif;
 }
 
 html, body {
-    margin: auto;
-    padding: 50px 0;
+    margin: 0;
+    padding: 0;
     overflow-x: hidden;
 }
 
@@ -16,12 +18,10 @@ body {
     #28241e 100%
     );
     color: #ffffff;
-    margin-bottom: 500px;
-}
+} 
 
 .borda{
-    margin: 0 50px 0 50px;
-    padding: 50px 20px;
+    margin: 50px;
     border: 5px solid;
     border-image: linear-gradient(135deg, #ff0022, #ff4d00, #ffcc00) 1;
     box-sizing: border-box;
@@ -29,24 +29,21 @@ body {
 
 .section-title {
     max-width: 100%;
-    width: 90%;
     font-size: 3rem;
     font-weight: 700;
     text-align: center;
-    margin: 0 auto;
-    margin-bottom: 10px;
     position: relative;
     background: linear-gradient(135deg, #ff0022, #ff4d00, #ffcc00);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     text-shadow: 0 0 15px rgba(245, 166, 35, 0.4);
-    padding-bottom: 0.5rem;
+    margin: 20px;
 }
 
 .pricing-content {
     border-radius: 12px;
-    padding: 2rem;
+    padding: 1rem;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
@@ -75,7 +72,6 @@ body {
 .pricing-tabs {
     display: flex;
     justify-content: center;
-    margin-bottom: 2rem;
     border: 1px solid rgba(245, 166, 35, 0.1);
     border-radius: 12px;
     background-color: rgba(10, 10, 15, 0.7);
@@ -121,29 +117,22 @@ body {
     background: linear-gradient(to right, #ff0022, #ff4d00);
 }
 
-.period-slider {
-    margin: 2rem auto;
-    max-width: 960px;
-}
-
 .period-options {
     display: flex;
     justify-content: center;
     gap: 1rem;
     padding: 0.5rem;
-    background: rgba(0, 0, 0, 0.2);
     border-radius: 8px;
-    margin: auto;
-    max-width: 500px;
 }
 
 .period-option {
     padding: 0.3rem 1.2rem;
+    width: 150px;
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     color: var(--color-text-secondary);
-    background: none;
+    background: rgba(10, 10, 15, 0.30);
     border-radius: 6px;
     transition: all 0.3s ease;
     text-align: center;
@@ -180,25 +169,22 @@ body {
 }
 
 .price-cards {
-    width: 100%;
     display: flex;
     justify-content: center;
     gap: 2rem;
-    padding: 5px;
     flex-wrap: wrap;
     flex-direction: wrap;
-    margin-bottom: 2rem;
     align-items: center;
 }
 
 .price-card {
     flex: 1;
-    max-height: 150px;
-    min-width: 500px;
-    max-width: 500px;
+    margin-top: 10px;
+    height: 100px;
+    width: 250px;
     background: linear-gradient(145deg, rgba(26, 26, 26, 0.95), rgba(10, 10, 15, 0.95));
     border-radius: 16px;
-    padding: 1.5rem;
+    padding: 1.2rem;
     text-align: center;
     align-items: center;
     align-content: center;
@@ -219,75 +205,45 @@ body {
 }
 
 .price-card h3 {
-    font-size: 1.4rem;
-    margin: 0.5rem;
+    font-size: 1rem;
+    margin: 0.2rem;
     color: #ffffff;
     position: relative;
 }
 
 .price-value {
-    font-size: 2.2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     background: linear-gradient(to right, #ff0022, #ff4d00);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin: 1rem 0;
+    margin: 0.5rem 0;
     position: relative;
 }
 
 .price-features {
     list-style: none;
     padding: 0;
-    margin: 1.5rem 0;
+    margin: 0.5rem 0;
 }
 
 .price-features li {
     margin: 0.5rem;
     color: #b3b3b3;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
 }
 
 .price-notes {
     text-align: center;
     margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(245, 166, 35, 0.1);
-    margin-bottom: 2rem;
 }
 
 .price-notes p {
     color: rgba(255, 255, 255, 0.6);
-    font-size: 0.85rem;
+    font-size: 0.7rem;
     line-height: 1.5;
     margin: 0.5rem 0;
 }
 
-.slider-container {
-    position: relative;
-    max-width: 100%;
-    margin: auto;
-    overflow: hidden;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-.slider {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-    width: 100%;
-}
-
-.slider img {
-    width: 100%;
-    object-fit: cover;
-    height: 400px;
-}
-
-.slider img {
-    display: none;
-}
-
-.slider img.active {
-    display: block;
 }
