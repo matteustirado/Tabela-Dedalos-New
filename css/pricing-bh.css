@@ -227,10 +227,16 @@ body {
     margin: 0.2rem 0;
 }
 
-.price-features li {
+.li-1 {
     margin: 0.3rem;
     color: #b3b3b3;
     font-size: 0.7rem;
+}
+
+.li-2 {
+    font-size: 0.5rem;
+    color: #b3b3b3;
+    margin: 0.1rem;
 }
 
 .price-notes {
