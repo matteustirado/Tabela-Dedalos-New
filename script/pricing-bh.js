@@ -11,44 +11,44 @@ const feriados = [
 // Dados de preços
 const pricingData = {
     'segunda': {
-        'manha': { single: 19.99, amiga: 24.99, marmitex: 29.99 },
-        'tarde': { single: 24.99, amiga: 39.99, marmitex: 44.99 },
-        'noite': { single: 27.99, amiga: 44.99, marmitex: 54.99 }
+        'manha': { player: 19.99, amiga: 24.99, marmita: 29.99 },
+        'tarde': { player: 24.99, amiga: 39.99, marmita: 44.99 },
+        'noite': { player: 27.99, amiga: 44.99, marmita: 54.99 }
     },
     'terça': {
-        'manha': { single: 19.99, amiga: 24.99, marmitex: 29.99 },
-        'tarde': { single: 24.99, amiga: 39.99, marmitex: 44.99 },
-        'noite': { single: 27.99, amiga: 44.99, marmitex: 54.99 }
+        'manha': { player: 19.99, amiga: 24.99, marmita: 29.99 },
+        'tarde': { player: 24.99, amiga: 39.99, marmita: 44.99 },
+        'noite': { player: 27.99, amiga: 44.99, marmita: 54.99 }
     },
     'quarta': {
-        'manha': { single: 19.99, amiga: 24.99, marmitex: 29.99 },
-        'tarde': { single: 24.99, amiga: 39.99, marmitex: 44.99 },
-        'noite': { single: 27.99, amiga: 44.99, marmitex: 54.99 }
+        'manha': { player: 19.99, amiga: 24.99, marmita: 29.99 },
+        'tarde': { player: 24.99, amiga: 39.99, marmita: 44.99 },
+        'noite': { player: 27.99, amiga: 44.99, marmita: 54.99 }
     },
     'quinta': {
-        'manha': { single: 19.99, amiga: 24.99, marmitex: 29.99 },
-        'tarde': { single: 24.99, amiga: 39.99, marmitex: 44.99 },
-        'noite': { single: 27.99, amiga: 44.99, marmitex: 54.99 }
+        'manha': { player: 19.99, amiga: 24.99, marmita: 29.99 },
+        'tarde': { player: 24.99, amiga: 39.99, marmita: 44.99 },
+        'noite': { player: 27.99, amiga: 44.99, marmita: 54.99 }
     },
     'sexta': {
-        'manha': { single: 19.99, amiga: 24.99, marmitex: 29.99 },
-        'tarde': { single: 24.99, amiga: 39.99, marmitex: 44.99 },
-        'noite': { single: 27.99, amiga: 44.99, marmitex: 54.99 }
+        'manha': { player: 19.99, amiga: 24.99, marmita: 29.99 },
+        'tarde': { player: 24.99, amiga: 39.99, marmita: 44.99 },
+        'noite': { player: 27.99, amiga: 44.99, marmita: 54.99 }
     },
     'sabado': {
-        'manha': { single: 24.99, amiga: 34.99, marmitex: 39.99 },
-        'tarde': { single: 39.99, amiga: 49.99, marmitex: 59.99 },
-        'noite': { single: 44.99, amiga: 59.99, marmitex: 79.99 }
+        'manha': { player: 24.99, amiga: 34.99, marmita: 39.99 },
+        'tarde': { player: 39.99, amiga: 49.99, marmita: 59.99 },
+        'noite': { player: 44.99, amiga: 59.99, marmita: 79.99 }
     },
     'domingo': {
-        'manha': { single: 24.99, amiga: 34.99, marmitex: 39.99 },
-        'tarde': { single: 39.99, amiga: 49.99, marmitex: 59.99 },
-        'noite': { single: 44.99, amiga: 59.99, marmitex: 79.99 }
+        'manha': { player: 24.99, amiga: 34.99, marmita: 39.99 },
+        'tarde': { player: 39.99, amiga: 49.99, marmita: 59.99 },
+        'noite': { player: 44.99, amiga: 59.99, marmita: 79.99 }
     },
     'feriados': {
-        'manha': { single: 24.99, amiga: 34.99, marmitex: 39.99 },
-        'tarde': { single: 39.99, amiga: 49.99, marmitex: 59.99 },
-        'noite': { single: 44.99, amiga: 59.99, marmitex: 79.99 }
+        'manha': { player: 24.99, amiga: 34.99, marmita: 39.99 },
+        'tarde': { player: 39.99, amiga: 49.99, marmita: 59.99 },
+        'noite': { player: 44.99, amiga: 59.99, marmita: 79.99 }
     }
 };
 
