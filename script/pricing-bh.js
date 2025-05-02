@@ -4,6 +4,7 @@
 const feriados = [
     '04-03-2025', // Exemplo: 04 de março de 2025
     '25-12-2024', // Natal 2024
+    '01-05-2025',
     '01-01-2025', // Ano novo 2025
     // Adicione mais feriados conforme necessário
 ];
