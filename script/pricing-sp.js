@@ -3,7 +3,7 @@
 // Lista de feriados no formato DD-MM-AAAA
 const feriados = [
     '04-03-2025', // Exemplo: 04 de março de 2025
-    '01-05-2025', // Natal 2024
+    '25-12-2024', // Natal 2024
     '01-05-2025',
     '01-01-2025', // Ano novo 2025
     // Adicione mais feriados conforme necessário
@@ -29,7 +29,7 @@ const pricingData = {
     'quinta': {
         'manha': { player: 29.99, amiga: 35.99, marmita: 49.99 },
         'tarde': { player: 32.99, amiga: 49.99, marmita: 59.99 },
-        'noite': { player: 35.99, amiga: 54.99, marmita: 69.99 }
+        'noite': { player: 53.99, amiga: 107.98, marmita: 161.97 }
     },
     'sexta': {
         'manha': { player: 29.99, amiga: 35.99, marmita: 49.99 },
