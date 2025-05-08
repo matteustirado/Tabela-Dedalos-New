@@ -149,9 +149,44 @@
     </div>
     <!-- Scripts -->
     <script>
-        setTimeout(() => {
-            location.reload();
-        }, 900000);
+        (function() {
+            // Define os horários alvo (em horas)
+            const targetHours = [6, 14, 20];
+        
+            function getNextTargetTime() {
+                const now = new Date();
+                const currentTime = now.getTime();
+        
+                for (let hour of targetHours) {
+                    const targetTime = new Date(now);
+                    targetTime.setHours(hour, 0, 0, 0); // set to hour:00:00
+        
+                    if (targetTime.getTime() > currentTime) {
+                        return targetTime;
+                    }
+                }
+        
+                // Se já passou todos, pega o próximo dia às 6h
+                const tomorrow = new Date(now);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                tomorrow.setHours(6, 0, 0, 0);
+                return tomorrow;
+            }
+        
+            function scheduleReload() {
+                const nextTarget = getNextTargetTime();
+                const now = new Date();
+                const timeUntilNext = nextTarget.getTime() - now.getTime();
+        
+                console.log(`Próxima atualização em: ${nextTarget} (em ${(timeUntilNext / 1000 / 60).toFixed(2)} minutos)`);
+        
+                setTimeout(() => {
+                    location.reload();
+                }, timeUntilNext);
+            }
+        
+            scheduleReload();
+        })();
     </script>
     <script src="script/pricing-sp.js"></script>
     <script src="script/slide.js"></script>
