@@ -271,16 +271,9 @@ body {
 
 .slider img {
     position: absolute;
-    margin-top: 95px;
-    height: 550px;
+    margin-top: 50px;
+    height: 650px;
     object-fit: cover;
+    opacity: 0;
     transition: opacity 1s ease-in-out;
-}
-
-#slider-terca, #slider-quarta, #slider-quinta, #slider-sexta, #slider-sabado, #slider-domingo {
-    display: none; /* Todos os sliders começam invisíveis */
-}
-
-#slider-segunda {
-    display: flex;
 }

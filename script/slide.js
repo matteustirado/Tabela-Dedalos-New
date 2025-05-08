@@ -1,47 +1,35 @@
-// Função para pegar o nome do dia
-function pegarNomeDia(numero) {
-    const dias = ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'];
-    return dias[numero];
-}
+document.addEventListener('DOMContentLoaded', function () {
+    const diasSemana = ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'];
+    const hoje = new Date();
+    const diaAtual = diasSemana[hoje.getDay()];
 
-// Pega o dia atual
-const hoje = new Date().getDay();
-const nomeDia = pegarNomeDia(hoje);
+    const slider = document.getElementById('slider');
+    const imagens = Array.from(slider.getElementsByTagName('img'));
+    
+    // Filtra apenas imagens do dia atual
+    const imagensDia = imagens.filter(img => img.src.includes(diaAtual));
+    
+    let indiceAtual = 0;
 
-// Seleciona todos os sliders
-const sliders = document.querySelectorAll('.slider');
+    // Inicializa todas como invisíveis
+    imagens.forEach(img => img.style.opacity = 0);
 
-// Esconde todos os sliders
-sliders.forEach(slider => {
-    slider.style.display = 'none';
+    if (imagensDia.length === 0) {
+        console.warn(`Nenhuma imagem encontrada para o dia: ${diaAtual}`);
+        return;
+    }
+
+    // Mostra a primeira imagem do dia
+    imagensDia[indiceAtual].style.opacity = 1;
+
+    setInterval(() => {
+        // Esconde imagem atual
+        imagensDia[indiceAtual].style.opacity = 0;
+
+        // Avança índice
+        indiceAtual = (indiceAtual + 1) % imagensDia.length;
+
+        // Mostra próxima imagem
+        imagensDia[indiceAtual].style.opacity = 1;
+    }, 5000); // alterna a cada 3 segundos
 });
-
-// Pega o slider correspondente ao dia atual
-const sliderHoje = document.getElementById(`slider-${nomeDia}`);
-
-// Deixa o slider do dia atual com display: flex
-if (sliderHoje) {
-    sliderHoje.style.display = 'flex';
-    sliderHoje.style.justifyContent = 'center';
-    sliderHoje.style.alignItems = 'center';
-}
-
-// Pega todas as imagens do slider do dia atual
-const imagens = sliderHoje.querySelectorAll('img');
-let indiceAtual = 0;
-
-// Inicializa: esconde todas as imagens, exceto a primeira
-imagens.forEach((img, index) => {
-    img.style.display = index === 0 ? 'block' : 'none';
-});
-
-setInterval(() => {
-    // Esconde a imagem atual
-    imagens[indiceAtual].style.display = 'none';
-
-    // Avança para a próxima imagem
-    indiceAtual = (indiceAtual + 1) % imagens.length;
-
-    // Mostra a nova imagem
-    imagens[indiceAtual].style.display = 'block';
-}, 10000); // Troca a cada 10 segundos
