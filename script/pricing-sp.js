@@ -17,9 +17,9 @@ const pricingData = {
         'noite': { player: 35.99, amiga: 54.99, marmita: 69.99 }
     },
     'terça': {
-        'manha': { player: 29.99, amiga: 35.99, marmita: 49.99 },
-        'tarde': { player: 32.99, amiga: 49.99, marmita: 59.99 },
-        'noite': { player: 35.99, amiga: 54.99, marmita: 69.99 }
+        'manha': { player: 34.99, amiga: 69,98, marmita: 104,97 },
+        'tarde': { player: 49.99, amiga: 99,98, marmita: 134,97 },
+        'noite': { player: 53.99, amiga: 107,98, marmita: 161,99 }
     },
     'quarta': {
         'manha': { player: 29.99, amiga: 35.99, marmita: 49.99 },
