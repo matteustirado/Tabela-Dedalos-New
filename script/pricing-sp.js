@@ -27,29 +27,29 @@ const pricingData = {
         'noite': { player: 59.99, amiga: 119.98, marmita: 179.97 }
     },
     'quinta': {
-        'manha': { player: 39.99, amiga: 79.98, marmita: 119.97 },
-        'tarde': { player: 49.99, amiga: 99.98, marmita: 149.97 },
-        'noite': { player: 59.99, amiga: 119.98, marmita: 179.97 }
+        'manha': { player: 59.99, amiga: 119.98, marmita: 179.97 },
+        'tarde': { player: 69.99, amiga: 139.98, marmita: 209.97 },
+        'noite': { player: 79.99, amiga: 159.98, marmita: 239.97 }
     },
     'sexta': {
-        'manha': { player: 39.99, amiga: 79.98, marmita: 119.97 },
-        'tarde': { player: 49.99, amiga: 99.98, marmita: 149.97 },
-        'noite': { player: 59.99, amiga: 119.98, marmita: 179.97 }
+        'manha': { player: 59.99, amiga: 119.98, marmita: 179.97 },
+        'tarde': { player: 69.99, amiga: 139.98, marmita: 209.97 },
+        'noite': { player: 79.99, amiga: 159.98, marmita: 239.97 }
     },
     'sabado': {
-        'manha': { player: 39.99, amiga: 79.98, marmita: 119.97 },
-        'tarde': { player: 49.99, amiga: 99.98, marmita: 149.97 },
-        'noite': { player: 59.99, amiga: 119.98, marmita: 179.97 }
+        'manha': { player: 59.99, amiga: 119.98, marmita: 179.97 },
+        'tarde': { player: 69.99, amiga: 139.98, marmita: 209.97 },
+        'noite': { player: 79.99, amiga: 159.98, marmita: 239.97 }
     },
     'domingo': {
-        'manha': { player: 39.99, amiga: 79.98, marmita: 119.97 },
-        'tarde': { player: 49.99, amiga: 99.98, marmita: 149.97 },
-        'noite': { player: 59.99, amiga: 119.98, marmita: 179.97 }
+        'manha': { player: 59.99, amiga: 119.98, marmita: 179.97 },
+        'tarde': { player: 69.99, amiga: 139.98, marmita: 209.97 },
+        'noite': { player: 79.99, amiga: 159.98, marmita: 239.97 }
     },
     'feriados': {
-        'manha': { player: 34.99, amiga: 58.99, marmita: 79.99 },
-        'tarde': { player: 49.99, amiga: 79.99, marmita: 109.99 },
-        'noite': { player: 53.99, amiga: 89.99, marmita: 119.99 }
+        'manha': { player: 59.99, amiga: 119.98, marmita: 179.97 },
+        'tarde': { player: 69.99, amiga: 139.98, marmita: 209.97 },
+        'noite': { player: 79.99, amiga: 159.98, marmita: 239.97 }
     }
 };
 
