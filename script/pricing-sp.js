@@ -27,14 +27,14 @@ const pricingData = {
         'noite': { player: 35.99, amiga: 54.99, marmita: 69.99 }
     },
     'quinta': {
-        'manha': { player: 29.99, amiga: 35.99, marmita: 49.99 },
-        'tarde': { player: 32.99, amiga: 49.99, marmita: 59.99 },
-        'noite': { player: 35.99, amiga: 54.99, marmita: 69.99 }
-    },
-    'sexta': {
         'manha': { player: 34.99, amiga: 58.99, marmita: 79.99 },
         'tarde': { player: 49.99, amiga: 79.99, marmita: 89.99 },
         'noite': { player: 53.99, amiga: 89.99, marmita: 119.99 }
+    },
+    'sexta': {
+        'manha': { player: 29.99, amiga: 35.99, marmita: 49.99 },
+        'tarde': { player: 32.99, amiga: 49.99, marmita: 59.99 },
+        'noite': { player: 35.99, amiga: 54.99, marmita: 69.99 }
     },
     'sabado': {
         'manha': { player: 34.99, amiga: 58.99, marmita: 79.99 },
