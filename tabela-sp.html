@@ -150,41 +150,47 @@
     <!-- Scripts -->
     <script>
         (function() {
-            // Define os horários alvo (em horas)
-            const targetHours = [6, 14, 20];
-        
+            // Inclui horários regulares e o especial 00h01
+            const targetTimes = [
+                { hour: 0, minute: 1 },
+                { hour: 6, minute: 0 },
+                { hour: 14, minute: 0 },
+                { hour: 20, minute: 0 }
+            ];
+    
             function getNextTargetTime() {
                 const now = new Date();
                 const currentTime = now.getTime();
-        
-                for (let hour of targetHours) {
-                    const targetTime = new Date(now);
-                    targetTime.setHours(hour, 0, 0, 0); // set to hour:00:00
-        
-                    if (targetTime.getTime() > currentTime) {
-                        return targetTime;
+    
+                // Verifica a próxima ocorrência válida
+                for (let time of targetTimes) {
+                    const target = new Date(now);
+                    target.setHours(time.hour, time.minute, 0, 0);
+    
+                    if (target.getTime() > currentTime) {
+                        return target;
                     }
                 }
-        
-                // Se já passou todos, pega o próximo dia às 6h
+    
+                // Se nenhuma foi encontrada para hoje, volta à primeira do próximo dia
                 const tomorrow = new Date(now);
                 tomorrow.setDate(tomorrow.getDate() + 1);
-                tomorrow.setHours(6, 0, 0, 0);
+                tomorrow.setHours(targetTimes[0].hour, targetTimes[0].minute, 0, 0);
                 return tomorrow;
             }
-        
+    
             function scheduleReload() {
                 const nextTarget = getNextTargetTime();
                 const now = new Date();
                 const timeUntilNext = nextTarget.getTime() - now.getTime();
-        
+    
                 console.log(`Próxima atualização em: ${nextTarget} (em ${(timeUntilNext / 1000 / 60).toFixed(2)} minutos)`);
-        
+    
                 setTimeout(() => {
                     location.reload();
                 }, timeUntilNext);
             }
-        
+    
             scheduleReload();
         })();
     </script>
