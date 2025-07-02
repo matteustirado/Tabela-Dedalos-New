@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuração de Preços</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin-tabela-sp.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="content-wrapper">
+            <header class="header-section">
+                <div class="header-info">
+                    <h1 class="page-title">Configuração de Preços</h1>
+                    <p class="page-description">Gerencie os preços para diferentes dias e períodos</p>
+                </div>
+                <div class="header-actions">
+                    <button id="showLogsBtn" class="button secondary-button">
+                        <i class="fas fa-history icon-left"></i> Ver Logs
+                    </button>
+                </div>
+            </header>
+
+            <div class="main-content-grid">
+                <section class="form-section price-config-form">
+                    <div class="form-inner-wrapper">
+                        <h2 class="section-heading">Alterar Preços</h2>
+                        
+                        <div class="form-group-container">
+                            <h3 class="group-heading">
+                                <i class="fas fa-user-shield icon-left"></i> Autenticação
+                            </h3>
+                            <div class="input-grid">
+                                <div class="input-group">
+                                    <label for="responsible" class="input-label">Responsável</label>
+                                    <input type="text" id="responsible" class="text-input">
+                                </div>
+                                <div class="input-group">
+                                    <label for="password" class="input-label">Senha</label>
+                                    <input type="password" id="password" class="text-input">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group-container">
+                            <h3 class="group-heading">
+                                <i class="fas fa-calendar-alt icon-left"></i> Período de Vigência
+                            </h3>
+                            <div class="input-grid">
+                                <div class="input-group relative-input">
+                                    <label for="startDate" class="input-label">Data Inicial</label>
+                                    <input type="date" id="startDate" class="text-input date-input">
+                                    <i class="fas fa-calendar calendar-icon"></i>
+                                </div>
+                                <div class="input-group relative-input">
+                                    <label for="endDate" class="input-label">Data Final</label>
+                                    <input type="date" id="endDate" class="text-input date-input">
+                                    <i class="fas fa-calendar calendar-icon"></i>
+                                </div>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="permanentChange" class="checkbox-input">
+                                <label for="permanentChange" class="checkbox-label">Alteração definitiva (ignora datas)</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group-container">
+                            <h3 class="group-heading">
+                                <i class="fas fa-calendar-day icon-left"></i> Dias da Semana (Selecione múltiplos)
+                            </h3>
+                            <div class="day-options-container">
+                                <button data-day="segunda" class="day-option button">Segunda</button>
+                                <button data-day="terça" class="day-option button">Terça</button>
+                                <button data-day="quarta" class="day-option button">Quarta</button>
+                                <button data-day="quinta" class="day-option button">Quinta</button>
+                                <button data-day="sexta" class="day-option button">Sexta</button>
+                                <button data-day="sabado" class="day-option button">Sábado</button>
+                                <button data-day="domingo" class="day-option button">Domingo</button>
+                                <button data-day="feriados" class="day-option button holiday-button">Feriados</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group-container">
+                            <h3 class="group-heading">
+                                <i class="fas fa-tags icon-left"></i> Configuração de Preços
+                            </h3>
+                            <div class="price-type-sections">
+                                <div class="price-type-card">
+                                    <h4 class="price-type-title">Player (Entrada Individual)</h4>
+                                    <div class="input-grid">
+                                        <div class="input-group relative-input">
+                                            <label class="input-label">Manhã</label>
+                                            <span class="currency-symbol">R$</span>
+                                            <input type="number" step="0.01" class="text-input price-input" data-type="player" data-period="manha">
+                                        </div>
+                                        <div class="input-group relative-input">
+                                            <label class="input-label">Tarde</label>
+                                            <span class="currency-symbol">R$</span>
+                                            <input type="number" step="0.01" class="text-input price-input" data-type="player" data-period="tarde">
+                                        </div>
+                                        <div class="input-group relative-input">
+                                            <label class="input-label">Noite</label>
+                                            <span class="currency-symbol">R$</span>
+                                            <input type="number" step="0.01" class="text-input price-input" data-type="player" data-period="noite">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="price-type-card">
+                                    <h4 class="price-type-title">Mão Amiga (2 pessoas)</h4>
+                                    <div class="input-grid">
+                                        <div class="input-group relative-input">
+                                            <label class="input-label">Manhã</label>
+                                            <span class="currency-symbol">R$</span>
+                                            <input type="number" step="0.01" class="text-input price-input" data-type="amiga" data-period="manha">
+                                        </div>
+                                        <div class="input-group relative-input">
+                                            <label class="input-label">Tarde</label>
+                                            <span class="currency-symbol">R$</span>
+                                            <input type="number" step="0.01" class="text-input price-input" data-type="amiga" data-period="tarde">
+                                        </div>
+                                        <div class="input-group relative-input">
+                                            <label class="input-label">Noite</label>
+                                            <span class="currency-symbol">R$</span>
+                                            <input type="number" step="0.01" class="text-input price-input" data-type="amiga" data-period="noite">
+                                        </div>
+                                    </div>
+                                    <div class="input-group message-input-group">
+                                        <label for="amigaMessage" class="input-label">Mensagem</label>
+                                        <input type="text" id="amigaMessage" class="text-input" placeholder="*Necessário ativar cupons de desconto">
+                                    </div>
+                                </div>
+
+                                <div class="price-type-card">
+                                    <h4 class="price-type-title">Marmita (3 pessoas)</h4>
+                                    <div class="input-grid">
+                                        <div class="input-group relative-input">
+                                            <label class="input-label">Manhã</label>
+                                            <span class="currency-symbol">R$</span>
+                                            <input type="number" step="0.01" class="text-input price-input" data-type="marmita" data-period="manha">
+                                        </div>
+                                        <div class="input-group relative-input">
+                                            <label class="input-label">Tarde</label>
+                                            <span class="currency-symbol">R$</span>
+                                            <input type="number" step="0.01" class="text-input price-input" data-type="marmita" data-period="tarde">
+                                        </div>
+                                        <div class="input-group relative-input">
+                                            <label class="input-label">Noite</label>
+                                            <span class="currency-symbol">R$</span>
+                                            <input type="number" step="0.01" class="text-input price-input" data-type="marmita" data-period="noite">
+                                        </div>
+                                    </div>
+                                    <div class="input-group message-input-group">
+                                        <label for="marmitaMessage" class="input-label">Mensagem</label>
+                                        <input type="text" id="marmitaMessage" class="text-input" placeholder="*Necessário ativar cupons de desconto">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group-container">
+                            <h3 class="group-heading">
+                                <i class="fas fa-sticky-note icon-left"></i> Observações
+                            </h3>
+                            <textarea id="notes" class="text-input textarea-input" rows="3" placeholder="Adicione observações sobre esta alteração..."></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button id="cancelBtn" class="button outline-button">Cancelar</button>
+                            <button id="saveBtn" class="button primary-button">Salvar Alterações</button>
+                        </div>
+                    </div>
+                </section>
+
+                <aside class="current-prices-section sticky-sidebar">
+                    <h2 class="section-heading">Preços Atuais</h2>
+                    <div id="currentPricesContainer" class="prices-display-area">
+                        </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+
+    <div id="logsModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Histórico de Alterações</h3>
+                <button id="closeLogsModal" class="modal-close-button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="logsContainer" class="logs-list">
+                    <div class="log-entry">
+                        <div class="log-header">
+                            <h4 class="log-title">Alteração de preços - Segunda-feira</h4>
+                            <p class="log-meta">Responsável: João Silva</p>
+                            <p class="log-meta">Data: 15/06/2023 14:30</p>
+                        </div>
+                        <span class="log-period-tag">Manhã</span>
+                        <div class="log-changes">
+                            <p>Player: R$ 29.99 &rarr; R$ 32.99</p>
+                            <p>Mão Amiga: R$ 35.99 &rarr; R$ 39.99</p>
+                            <p>Marmita: R$ 49.99 &rarr; R$ 54.99</p>
+                        </div>
+                        <div class="log-details">
+                            <p>Vigência: 20/06/2023 a 25/06/2023</p>
+                            <p>Observação: Aumento temporário devido a evento especial</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script/admin-tabela-sp.js"></script>
+</body>
+</html>

@@ -1,169 +1,117 @@
-// pricing.js
+document.addEventListener('DOMContentLoaded', () => {
+    let pricingData = {};
 
-// Lista de feriados no formato DD-MM-AAAA
-const feriados = [
-    '04-03-2025', // Exemplo: 04 de março de 2025
-    '25-12-2024', // Natal 2024
-    '01-05-2025',
-    '01-01-2025', // Ano novo 2025
-    // Adicione mais feriados conforme necessário
-];
-
-// Dados de preços
-const pricingData = {
-    'segunda': {
-        'manha': { player: 29.99, amiga: 35.99, marmita: 49.99 },
-        'tarde': { player: 32.99, amiga: 49.99, marmita: 59.99 },
-        'noite': { player: 35.99, amiga: 54.99, marmita: 69.99 }
-    },
-    'terça': {
-        'manha': { player: 29.99, amiga: 35.99, marmita: 49.99 },
-        'tarde': { player: 32.99, amiga: 49.99, marmita: 59.99 },
-        'noite': { player: 35.99, amiga: 54.99, marmita: 69.99 }
-    },
-    'quarta': {
-        'manha': { player: 29.99, amiga: 35.99, marmita: 49.99 },
-        'tarde': { player: 32.99, amiga: 49.99, marmita: 59.99 },
-        'noite': { player: 35.99, amiga: 54.99, marmita: 69.99 }
-    },
-    'quinta': {
-        'manha': { player: 29.99, amiga: 35.99, marmita: 49.99 },
-        'tarde': { player: 32.99, amiga: 49.99, marmita: 59.99 },
-        'noite': { player: 53.99, amiga: 107.98, marmita: 161.97 }
-    },
-    'sexta': {
-        'manha': { player: 29.99, amiga: 35.99, marmita: 49.99 },
-        'tarde': { player: 32.99, amiga: 49.99, marmita: 59.99 },
-        'noite': { player: 35.99, amiga: 54.99, marmita: 69.99 }
-    },
-    'sabado': {
-        'manha': { player: 34.99, amiga: 58.99, marmita: 79.99 },
-        'tarde': { player: 49.99, amiga: 79.99, marmita: 109.99 },
-        'noite': { player: 53.99, amiga: 89.99, marmita: 119.99 }
-    },
-    'domingo': {
-        'manha': { player: 34.99, amiga: 58.99, marmita: 79.99 },
-        'tarde': { player: 49.99, amiga: 79.99, marmita: 109.99 },
-        'noite': { player: 53.99, amiga: 89.99, marmita: 119.99 }
-    },
-    'feriados': {
-        'manha': { player: 34.99, amiga: 58.99, marmita: 79.99 },
-        'tarde': { player: 49.99, amiga: 79.99, marmita: 109.99 },
-        'noite': { player: 53.99, amiga: 89.99, marmita: 119.99 }
-    }
-};
-
-// Função para verificar se uma data é feriado
-function isHoliday(date) {
-    const currentDate = String(date.getDate()).padStart(2, '0') + '-' +
-                        String(date.getMonth() + 1).padStart(2, '0') + '-' +
-                        date.getFullYear();
-    return feriados.includes(currentDate);
-}
-
-// Define o período atual
-function getCurrentPeriod() {
-    const now = new Date();
-    const hours = now.getHours();
-
-    if (hours >= 6 && hours < 14) return 'manha';
-    if (hours >= 14 && hours < 20) return 'tarde';
-    return 'noite';
-}
-
-// Define o dia atual considerando feriados
-function getCurrentDay() {
-    const now = new Date();
-    const dayIndex = now.getDay(); // 0 = domingo, 1 = segunda, ..., 6 = sabado
-
-    const days = {
-        1: 'segunda',
-        2: 'terça',
-        3: 'quarta',
-        4: 'quinta',
-        5: 'sexta',
-        6: 'sabado',
-        0: 'domingo'
-    };
-
-    if (isHoliday(now)) {
-        return 'feriados';
+    // Função para buscar os dados de preços do arquivo JSON
+    async function fetchPricingData() {
+        try {
+            const response = await fetch('precos.json');
+            if (!response.ok) {
+                throw new Error('Não foi possível carregar os dados de preços.');
+            }
+            pricingData = await response.json();
+            updateInterface(); // Atualiza a interface assim que os dados são carregados
+        } catch (error) {
+            console.error(error);
+            // Exibir uma mensagem de erro para o usuário, se desejar
+        }
     }
 
-    return days[dayIndex];
-}
+    function isHoliday(date) {
+        const currentDate = String(date.getDate()).padStart(2, '0') + '-' +
+                              String(date.getMonth() + 1).padStart(2, '0') + '-' +
+                              date.getFullYear();
+        return pricingData.feriados.includes(currentDate);
+    }
 
-// Atualiza os preços na tela
-function updatePrices(day, period) {
-    const priceCards = document.querySelectorAll('.price-card');
+    function getCurrentPeriod() {
+        const now = new Date();
+        const hours = now.getHours();
+        if (hours >= 6 && hours < 14) return 'manha';
+        if (hours >= 14 && hours < 20) return 'tarde';
+        return 'noite';
+    }
 
-    priceCards.forEach(card => {
-        const title = card.querySelector('h3').textContent.toLowerCase();
-        const type = title === 'mão amiga' ? 'amiga' : title;
-        const price = pricingData[day][period][type];
-        card.querySelector('.price').textContent = price.toFixed(2);
-    });
-}
-
-// Atualiza a interface (tabs e períodos ativos)
-function updateInterface() {
-    const currentDay = getCurrentDay();
-    const currentPeriod = getCurrentPeriod();
-
-    // Atualiza os tabs
-    document.querySelectorAll('.tab-button').forEach(button => {
-        button.classList.remove('active');
-        if (button.dataset.tab === currentDay) {
-            button.classList.add('active');
+    function getCurrentDay() {
+        const now = new Date();
+        if (isHoliday(now)) {
+            return 'feriados';
         }
-    });
+        const dayIndex = now.getDay();
+        const days = ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'];
+        return days[dayIndex];
+    }
 
-    // Atualiza os períodos
-    document.querySelectorAll('.period-option').forEach(option => {
-        option.classList.remove('active');
-        if (option.dataset.period === currentPeriod) {
-            option.classList.add('active');
+    function updatePrices(day, period) {
+        if (!pricingData.dias || !pricingData.dias[day] || !pricingData.dias[day][period]) {
+            console.error(`Dados de preços não encontrados para: ${day}, ${period}`);
+            return;
         }
-    });
 
-    // Atualiza os preços
-    updatePrices(currentDay, currentPeriod);
-}
+        const prices = pricingData.dias[day][period];
+        const priceCards = document.querySelectorAll('.price-card');
 
-// Event listeners para os botões de dias
-document.querySelectorAll('.tab-button').forEach(button => {
-    button.addEventListener('click', () => {
-        const selectedTab = button.dataset.tab;
+        priceCards.forEach(card => {
+            const titleElement = card.querySelector('h3');
+            const type = titleElement.textContent.toLowerCase().replace(' ', ''); // 'player', 'moamiga', 'marmita'
+            
+            let key;
+            if (type.includes('player')) key = 'player';
+            else if (type.includes('amiga')) key = 'amiga';
+            else if (type.includes('marmita')) key = 'marmita';
+
+            if (prices[key] !== undefined) {
+                card.querySelector('.price').textContent = prices[key].toFixed(2);
+            }
+
+            const featuresList = card.querySelector('.price-features');
+            const messageItem = featuresList.querySelector('.dynamic-message');
+            if (messageItem) {
+                messageItem.remove();
+            }
+
+            if ((key === 'amiga' || key === 'marmita') && pricingData.dias[day].amiga.message) {
+                 const newListItem = document.createElement('li');
+                 newListItem.className = 'dynamic-message';
+                 newListItem.textContent = pricingData.dias[day].amiga.message;
+                 featuresList.appendChild(newListItem);
+            }
+        });
+    }
+
+    function updateInterface() {
+        const currentDay = getCurrentDay();
         const currentPeriod = getCurrentPeriod();
 
-        let dayToUse = selectedTab;
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.classList.toggle('active', button.dataset.tab === currentDay);
+        });
 
-        // Se hoje é feriado, sempre usa 'feriados' (exceto se o botão clicado for explicitamente 'feriados')
-        if (selectedTab !== 'feriados' && isHoliday(new Date())) {
-            dayToUse = 'feriados';
-        }
+        document.querySelectorAll('.period-option').forEach(option => {
+            option.classList.toggle('active', option.dataset.period === currentPeriod);
+        });
 
-        updatePrices(dayToUse, currentPeriod);
+        updatePrices(currentDay, currentPeriod);
+    }
 
-        // Atualiza o destaque visual do botão clicado
-        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.addEventListener('click', () => {
+            const selectedDay = button.dataset.tab;
+            const activePeriod = document.querySelector('.period-option.active').dataset.period;
+            updatePrices(selectedDay, activePeriod);
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+        });
     });
-});
 
-// Event listeners para os botões de período
-document.querySelectorAll('.period-option').forEach(option => {
-    option.addEventListener('click', () => {
-        const period = option.dataset.period;
-        const currentDay = getCurrentDay();
-
-        updatePrices(currentDay, period);
-
-        // Atualiza o destaque visual do período clicado
-        document.querySelectorAll('.period-option').forEach(opt => opt.classList.remove('active'));
-        option.classList.add('active');
+    document.querySelectorAll('.period-option').forEach(option => {
+        option.addEventListener('click', () => {
+            const selectedPeriod = option.dataset.period;
+            const activeDay = document.querySelector('.tab-button.active').dataset.tab;
+            updatePrices(activeDay, selectedPeriod);
+            document.querySelectorAll('.period-option').forEach(opt => opt.classList.remove('active'));
+            option.classList.add('active');
+        });
     });
-});
 
-// Inicializa a interface ao carregar a página
-updateInterface();
+    fetchPricingData(); // Inicia o processo
+});
