@@ -4,7 +4,7 @@ const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
 const app = express();
-const PORT = process.env.PORT || 3000; // Render usa a variável de ambiente PORT
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.static(__dirname));
@@ -14,22 +14,20 @@ const dataPath = '/data';
 const pricesFilePath = path.join(dataPath, 'precos.json');
 const overridesFilePath = path.join(dataPath, 'overrides.json');
 
-// ⭐ NOVO: Estrutura de preços padrão para criar o arquivo se ele não existir
 const defaultPrices = {
     dias: {
-        segunda: { player: { manha: 29.99, tarde: 32.99, noite: 35.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 54.99, message: "*Necessario retirar cupom no site" }, marmita: { manha: 49.99, tarde: 59.99, noite: 69.99, message: "*Necessario retirar cupom no site" } },
-        terca:   { player: { manha: 29.99, tarde: 32.99, noite: 35.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 54.99, message: "*Necessario retirar cupom no site" }, marmita: { manha: 49.99, tarde: 59.99, noite: 69.99, message: "*Necessario retirar cupom no site" } },
-        quarta:  { player: { manha: 29.99, tarde: 32.99, noite: 35.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 54.99, message: "*Necessario retirar cupom no site" }, marmita: { manha: 49.99, tarde: 59.99, noite: 69.99, message: "*Necessario retirar cupom no site" } },
-        quinta:  { player: { manha: 29.99, tarde: 32.99, noite: 53.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 107.98, message: "*Necessario retirar cupom no site" }, marmita: { manha: 49.99, tarde: 59.99, noite: 161.97, message: "*Necessario retirar cupom no site" } },
-        sexta:   { player: { manha: 29.99, tarde: 32.99, noite: 35.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 54.99, message: "*Necessario retirar cupom no site" }, marmita: { manha: 49.99, tarde: 59.99, noite: 69.99, message: "*Necessario retirar cupom no site" } },
-        sabado:  { player: { manha: 34.99, tarde: 49.99, noite: 53.99 }, amiga: { manha: 58.99, tarde: 79.99, noite: 89.99, message: "*Necessario retirar cupom no site" }, marmita: { manha: 79.99, tarde: 109.99, noite: 119.99, message: "*Necessario retirar cupom no site" } },
-        domingo: { player: { manha: 34.99, tarde: 49.99, noite: 53.99 }, amiga: { manha: 58.99, tarde: 79.99, noite: 89.99, message: "*Necessario retirar cupom no site" }, marmita: { manha: 79.99, tarde: 109.99, noite: 119.99, message: "*Necessario retirar cupom no site" } },
-        feriados:{ player: { manha: 34.99, tarde: 49.99, noite: 53.99 }, amiga: { manha: 58.99, tarde: 79.99, noite: 89.99, message: "*Necessario retirar cupom no site" }, marmita: { manha: 79.99, tarde: 109.99, noite: 119.99, message: "*Necessario retirar cupom no site" } }
+        segunda: { prices: { player: { manha: 29.99, tarde: 32.99, noite: 35.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 54.99 }, marmita: { manha: 49.99, tarde: 59.99, noite: 69.99 } }, messages: { amiga: { message: "*Cupom necessário" }, marmita: { message: "*Cupom necessário" } } },
+        terca:   { prices: { player: { manha: 29.99, tarde: 32.99, noite: 35.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 54.99 }, marmita: { manha: 49.99, tarde: 59.99, noite: 69.99 } }, messages: { amiga: { message: "*Cupom necessário" }, marmita: { message: "*Cupom necessário" } } },
+        quarta:  { prices: { player: { manha: 29.99, tarde: 32.99, noite: 35.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 54.99 }, marmita: { manha: 49.99, tarde: 59.99, noite: 69.99 } }, messages: { amiga: { message: "*Cupom necessário" }, marmita: { message: "*Cupom necessário" } } },
+        quinta:  { prices: { player: { manha: 29.99, tarde: 32.99, noite: 53.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 107.98 }, marmita: { manha: 49.99, tarde: 59.99, noite: 161.97 } }, messages: { amiga: { message: "*Cupom necessário" }, marmita: { message: "*Cupom necessário" } } },
+        sexta:   { prices: { player: { manha: 29.99, tarde: 32.99, noite: 35.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 54.99 }, marmita: { manha: 49.99, tarde: 59.99, noite: 69.99 } }, messages: { amiga: { message: "*Cupom necessário" }, marmita: { message: "*Cupom necessário" } } },
+        sabado:  { prices: { player: { manha: 34.99, tarde: 49.99, noite: 53.99 }, amiga: { manha: 58.99, tarde: 79.99, noite: 89.99 }, marmita: { manha: 79.99, tarde: 109.99, noite: 119.99 } }, messages: { amiga: { message: "*Cupom necessário" }, marmita: { message: "*Cupom necessário" } } },
+        domingo: { prices: { player: { manha: 34.99, tarde: 49.99, noite: 53.99 }, amiga: { manha: 58.99, tarde: 79.99, noite: 89.99 }, marmita: { manha: 79.99, tarde: 109.99, noite: 119.99 } }, messages: { amiga: { message: "*Cupom necessário" }, marmita: { message: "*Cupom necessário" } } },
+        feriados:{ prices: { player: { manha: 34.99, tarde: 49.99, noite: 53.99 }, amiga: { manha: 58.99, tarde: 79.99, noite: 89.99 }, marmita: { manha: 79.99, tarde: 109.99, noite: 119.99 } }, messages: { amiga: { message: "*Cupom necessário" }, marmita: { message: "*Cupom necessário" } } }
     },
     feriados: [ "01-01-2025", "04-03-2025", "01-05-2025", "25-12-2025" ]
 };
 
-// ⭐ NOVO: Função que verifica e cria os arquivos de dados se não existirem
 async function initializeDataFiles() {
     try {
         await fs.access(pricesFilePath);
@@ -37,7 +35,6 @@ async function initializeDataFiles() {
         console.log("precos.json não encontrado. Criando arquivo padrão...");
         await fs.writeFile(pricesFilePath, JSON.stringify(defaultPrices, null, 2), 'utf8');
     }
-
     try {
         await fs.access(overridesFilePath);
     } catch (error) {
@@ -46,12 +43,8 @@ async function initializeDataFiles() {
     }
 }
 
-
-// --- ROTAS DA API ---
-
-// ROTA POST (SALVAR) - Nenhuma alteração necessária aqui
+// ROTA POST (SALVAR)
 app.post('/api/prices', async (req, res) => {
-    // ... seu código da rota POST continua o mesmo ...
     const { password, days, prices, messages, isPermanent, startDate, endDate, responsible, notes } = req.body;
     if (password !== process.env.ADMIN_PASSWORD) {
         return res.status(401).json({ message: "Senha incorreta!" });
@@ -60,7 +53,15 @@ app.post('/api/prices', async (req, res) => {
         try {
             const pricesDataRaw = await fs.readFile(pricesFilePath, 'utf8');
             const pricesData = JSON.parse(pricesDataRaw);
-            days.forEach(day => { /* ...lógica de alteração... */ });
+            days.forEach(day => {
+                if (pricesData.dias[day]) {
+                    Object.assign(pricesData.dias[day].prices.player, prices.player);
+                    Object.assign(pricesData.dias[day].prices.amiga, prices.amiga);
+                    Object.assign(pricesData.dias[day].prices.marmita, prices.marmita);
+                    pricesData.dias[day].messages.amiga = messages.amiga;
+                    pricesData.dias[day].messages.marmita = messages.marmita;
+                }
+            });
             await fs.writeFile(pricesFilePath, JSON.stringify(pricesData, null, 2));
             return res.json({ message: "Preços permanentes atualizados!", updatedPrices: pricesData });
         } catch (error) {
@@ -80,31 +81,59 @@ app.post('/api/prices', async (req, res) => {
     }
 });
 
-// ROTA GET (CARREGAR) - Nenhuma alteração necessária aqui
+// ROTA GET (CARREGAR)
 app.get('/api/prices', async (req, res) => {
-    // ... seu código da rota GET continua o mesmo ...
     try {
         const pricesDataRaw = await fs.readFile(pricesFilePath, 'utf8');
         const basePrices = JSON.parse(pricesDataRaw);
+
         const overridesDataRaw = await fs.readFile(overridesFilePath, 'utf8');
         const overrides = JSON.parse(overridesDataRaw);
+
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        const activeOverrides = overrides.filter(override => { /* ...lógica de filtro... */ });
-        if (activeOverrides.length === 0) { return res.json(basePrices); }
+
+        // ⭐ LÓGICA DE FILTRO COMPLETA E CORRIGIDA
+        const activeOverrides = overrides.filter(override => {
+            const startDate = new Date(override.startDate);
+            const endDate = new Date(override.endDate);
+            // Ajusta as datas para evitar problemas com fuso horário, considerando o dia inteiro.
+            startDate.setHours(0,0,0,0);
+            endDate.setHours(23,59,59,999);
+            return today >= startDate && today <= endDate;
+        });
+
+        if (activeOverrides.length === 0) {
+            return res.json(basePrices);
+        }
+
         const finalPrices = JSON.parse(JSON.stringify(basePrices));
-        activeOverrides.forEach(override => { /* ...lógica de merge... */ });
+
+        // ⭐ LÓGICA DE MERGE COMPLETA E CORRIGIDA
+        activeOverrides.forEach(override => {
+            override.days.forEach(day => {
+                if (finalPrices.dias[day]) {
+                    // Mescla os preços e as mensagens do override sobre os preços base
+                    Object.assign(finalPrices.dias[day].prices.player, override.prices.player);
+                    Object.assign(finalPrices.dias[day].prices.amiga, override.prices.amiga);
+                    Object.assign(finalPrices.dias[day].prices.marmita, override.prices.marmita);
+                    finalPrices.dias[day].messages.amiga = override.messages.amiga;
+                    finalPrices.dias[day].messages.marmita = override.messages.marmita;
+                }
+            });
+        });
+
         res.json(finalPrices);
+
     } catch (error) {
-        console.log("Erro na rota GET /api/prices:", error);
-        res.status(500).json({ message: "Erro ao ler os arquivos de preços." });
+        console.error("Erro detalhado na rota GET /api/prices:", error);
+        res.status(500).json({ message: "Erro ao ler os arquivos de preços no servidor." });
     }
 });
 
 
-// --- INICIALIZAÇÃO DO SERVIDOR ---
+// INICIALIZAÇÃO DO SERVIDOR
 app.listen(PORT, async () => {
     console.log(`Servidor rodando na porta ${PORT}`);
-    // ⭐ NOVO: Chama a função de inicialização dos arquivos ao iniciar o servidor
     await initializeDataFiles();
 });

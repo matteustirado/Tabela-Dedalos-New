@@ -25,21 +25,31 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('/api/prices');
             if (!response.ok) throw new Error('Falha ao buscar preços do servidor.');
             currentPrices = await response.json();
+            
+            console.log("Preços recebidos do servidor (Admin):", currentPrices);
+
             renderCurrentPrices();
             populatePriceInputs();
         } catch (error) {
-            console.error('Erro ao buscar preços:', error);
-            alert('Não foi possível carregar os preços atuais.');
+            console.error('Erro ao buscar preços (Admin):', error);
+            alert('Não foi possível carregar os preços atuais. Verifique o console do navegador.');
         }
     }
 
+    // FUNÇÃO CORRIGIDA PARA LER A ESTRUTURA DE DADOS CORRETA
     function renderCurrentPrices() {
         if (!currentPricesContainer || !currentPrices.dias) return;
-        const referenceDayPrices = currentPrices.dias.segunda;
+        const referenceDay = currentPrices.dias.segunda;
+        
+        if (!referenceDay || !referenceDay.prices) {
+            console.error("Estrutura de preços de referência (segunda) está incompleta.");
+            return;
+        }
+
         currentPricesContainer.innerHTML = `
             <div class="prices-display-wrapper">
-                ${Object.keys(referenceDayPrices).filter(type => type !== 'message').map(type => {
-                    const typeData = referenceDayPrices[type];
+                ${Object.keys(referenceDay.prices).map(type => {
+                    const typeData = referenceDay.prices[type]; // Acessa o objeto aninhado 'prices'
                     const title = type === 'player' ? 'Player' : (type === 'amiga' ? 'Mão Amiga' : 'Marmita');
                     return `
                     <div class="price-card-display">
@@ -55,28 +65,31 @@ document.addEventListener('DOMContentLoaded', () => {
             <p style="font-size: 0.8rem; color: #888; text-align: center; margin-top: 1rem;">*Exibindo preços base de Segunda-Feira.</p>`;
     }
 
+    // FUNÇÃO CORRIGIDA PARA LER A ESTRUTURA DE DADOS CORRETA
     function populatePriceInputs() {
-        const referencePrices = currentPrices.dias.segunda;
+        if (!currentPrices.dias) return;
+        const referenceDay = currentPrices.dias.segunda;
+
+        if (!referenceDay || !referenceDay.prices || !referenceDay.messages) return;
+
         document.querySelectorAll('.price-input').forEach(input => {
             const type = input.dataset.type;
             const period = input.dataset.period;
-            if (referencePrices[type] && referencePrices[type][period] !== undefined) {
-                input.value = referencePrices[type][period].toFixed(2);
+            if (referenceDay.prices[type] && referenceDay.prices[type][period] !== undefined) {
+                input.value = referenceDay.prices[type][period].toFixed(2);
             }
         });
-        document.getElementById('amigaMessage').value = referencePrices.amiga.message || '';
-        document.getElementById('marmitaMessage').value = referencePrices.marmita.message || '';
+
+        document.getElementById('amigaMessage').value = referenceDay.messages.amiga.message || '';
+        document.getElementById('marmitaMessage').value = referenceDay.messages.marmita.message || '';
     }
     
-    // ⭐ FUNÇÃO PARA RENDERIZAR OS LOGS (NECESSÁRIA PARA A EXIBIÇÃO)
     function renderLogs() {
         logsContainer.innerHTML = '';
         if (logs.length === 0) {
             logsContainer.innerHTML = '<p>Nenhum log de alteração encontrado.</p>';
             return;
         }
-        // Como a array 'logs' já está na ordem correta (mais novo primeiro),
-        // apenas iteramos e adicionamos ao container.
         logs.forEach(log => {
             const logEntryDiv = document.createElement('div');
             logEntryDiv.className = 'log-entry';
@@ -102,10 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
         startDateInput.disabled = false;
         endDateInput.disabled = false;
         document.getElementById('notes').value = '';
-        
         dayOptions.forEach(button => button.classList.remove('active'));
         selectedDays.clear();
-        
         if (currentPrices.dias) {
             populatePriceInputs();
         }
@@ -113,13 +124,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- EVENT LISTENERS ---
 
-    // ⭐ EVENT LISTENER DO LOG MODIFICADO PARA PEDIR SENHA
     if (showLogsBtn) {
         showLogsBtn.addEventListener('click', () => {
             const password = prompt("Para ver os logs, por favor, digite a senha:");
-            if (password === "adminlog") { // Senha definida
-                renderLogs(); // Prepara os logs para exibição
-                logsModal.classList.remove('hidden'); // Abre o modal
+            if (password === "adminlog") {
+                renderLogs();
+                logsModal.classList.remove('hidden');
             } else if (password !== null) {
                 alert("Senha incorreta!");
             }
@@ -132,7 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ACIONAMENTO DO CALENDÁRIO (CÓDIGO ORIGINAL MANTIDO)
     calendarIcons.forEach(icon => {
         icon.addEventListener('click', (event) => {
             const input = event.currentTarget.previousElementSibling;
@@ -142,7 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // SELEÇÃO MÚLTIPLA DOS DIAS (CÓDIGO ORIGINAL MANTIDO)
     dayOptions.forEach(button => {
         button.addEventListener('click', () => {
             const day = button.dataset.day;
@@ -156,7 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // CHECKBOX DE ALTERAÇÃO DEFINITIVA (CÓDIGO ORIGINAL MANTIDO)
     if (permanentChangeCheckbox) {
         permanentChangeCheckbox.addEventListener('change', (event) => {
             const isChecked = event.target.checked;
@@ -169,7 +176,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // BOTÃO CANCELAR (CÓDIGO ORIGINAL MANTIDO)
     if (cancelBtn) {
         cancelBtn.addEventListener('click', () => {
             resetForm();
@@ -177,11 +183,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ⭐ BOTÃO SALVAR COM A LÓGICA COMPLETA E ADICIONANDO O LOG NO INÍCIO
-    // BOTÃO SALVAR (Lógica atualizada para o novo backend)
     if (saveBtn) {
         saveBtn.addEventListener('click', async () => {
-            // Coleta de dados do formulário
+            // Coleta de dados...
             const responsible = document.getElementById('responsible').value;
             const password = document.getElementById('password').value;
             const startDate = startDateInput.value;
@@ -191,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const amigaMessage = document.getElementById('amigaMessage').value;
             const marmitaMessage = document.getElementById('marmitaMessage').value;
 
-            // Validações
+            // Validações...
             if (!responsible || !password) return alert('Por favor, preencha o responsável e a senha.');
             if (selectedDays.size === 0) return alert('Por favor, selecione ao menos um dia da semana.');
             if (!isPermanent && (!startDate || !endDate)) return alert('Selecione as datas de início e fim para uma alteração temporária.');
@@ -204,48 +208,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 newPrices[type][period] = parseFloat(input.value);
             });
 
-            // Estrutura os dados para enviar ao servidor
             const payload = {
-                password,
-                days: Array.from(selectedDays),
-                prices: newPrices,
-                messages: { amiga: amigaMessage, marmita: marmitaMessage },
-                isPermanent,
-                startDate,
-                endDate,
-                responsible,
-                notes
+                password, days: Array.from(selectedDays), prices: newPrices,
+                messages: { amiga: {message: amigaMessage}, marmita: {message: marmitaMessage} },
+                isPermanent, startDate, endDate, responsible, notes
             };
             
-            // Estrutura o log para exibição local
             const newLog = {
-                responsible,
-                timestamp: new Date().toLocaleString('pt-BR'),
+                responsible, timestamp: new Date().toLocaleString('pt-BR'),
                 days: Array.from(selectedDays),
-                // Adiciona o tipo de alteração no log
                 notes: `(${isPermanent ? 'DEFINITIVA' : 'TEMPORÁRIA'}) ${notes}`
             };
 
-            // Envia para o servidor
             try {
                 const response = await fetch('/api/prices', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
                 });
-
                 const result = await response.json();
                 if (!response.ok) throw new Error(result.message || 'Falha ao salvar os preços.');
                 
-                alert(result.message); // Exibe a mensagem de sucesso do servidor
+                alert(result.message);
+                logs.unshift(newLog);
                 
-                logs.unshift(newLog); // Adiciona o log no início da lista local
-                
-                // Se a alteração foi permanente, busca os novos preços base
                 if (isPermanent) {
                     currentPrices = result.updatedPrices;
                 }
-                
                 resetForm();
                 renderCurrentPrices();
 
