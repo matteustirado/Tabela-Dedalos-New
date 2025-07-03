@@ -36,20 +36,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // FUNÇÃO CORRIGIDA PARA LER A ESTRUTURA DE DADOS CORRETA
+    // FUNÇÕES AUXILIARES DE DATA
+    function isHoliday(date) {
+        if (!currentPrices.feriados) return false;
+        const currentDate = String(date.getDate()).padStart(2, '0') + '-' +
+                              String(date.getMonth() + 1).padStart(2, '0') + '-' +
+                              date.getFullYear();
+        return currentPrices.feriados.includes(currentDate);
+    }
+
+    function getCurrentDay() {
+        const now = new Date();
+        if (isHoliday(now)) {
+            return 'feriados';
+        }
+        const dayIndex = now.getDay();
+        const days = ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'];
+        return days[dayIndex];
+    }
+
+    // FUNÇÃO MODIFICADA PARA EXIBIR PREÇOS DINAMICAMENTE
     function renderCurrentPrices() {
         if (!currentPricesContainer || !currentPrices.dias) return;
-        const referenceDay = currentPrices.dias.segunda;
         
-        if (!referenceDay || !referenceDay.prices) {
-            console.error("Estrutura de preços de referência (segunda) está incompleta.");
+        const currentDayName = getCurrentDay();
+        const currentDayData = currentPrices.dias[currentDayName];
+        
+        if (!currentDayData || !currentDayData.prices) {
+            console.error(`Estrutura de preços para '${currentDayName}' está incompleta.`);
+            currentPricesContainer.innerHTML = `<p>Não foi possível carregar os preços para ${currentDayName}.</p>`;
             return;
         }
 
+        const displayName = currentDayName.charAt(0).toUpperCase() + currentDayName.slice(1);
+
         currentPricesContainer.innerHTML = `
             <div class="prices-display-wrapper">
-                ${Object.keys(referenceDay.prices).map(type => {
-                    const typeData = referenceDay.prices[type]; // Acessa o objeto aninhado 'prices'
+                ${Object.keys(currentDayData.prices).map(type => {
+                    const typeData = currentDayData.prices[type];
                     const title = type === 'player' ? 'Player' : (type === 'amiga' ? 'Mão Amiga' : 'Marmita');
                     return `
                     <div class="price-card-display">
@@ -62,14 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>`;
                 }).join('')}
             </div>
-            <p style="font-size: 0.8rem; color: #888; text-align: center; margin-top: 1rem;">*Exibindo preços base de Segunda-Feira.</p>`;
+            <p style="font-size: 0.8rem; color: #888; text-align: center; margin-top: 1rem;">*Exibindo preços atuais de ${displayName}.</p>`;
     }
 
-    // FUNÇÃO CORRIGIDA PARA LER A ESTRUTURA DE DADOS CORRETA
+    // Esta função continua usando segunda-feira como base para preencher o formulário
     function populatePriceInputs() {
         if (!currentPrices.dias) return;
         const referenceDay = currentPrices.dias.segunda;
-
         if (!referenceDay || !referenceDay.prices || !referenceDay.messages) return;
 
         document.querySelectorAll('.price-input').forEach(input => {
@@ -79,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.value = referenceDay.prices[type][period].toFixed(2);
             }
         });
-
         document.getElementById('amigaMessage').value = referenceDay.messages.amiga.message || '';
         document.getElementById('marmitaMessage').value = referenceDay.messages.marmita.message || '';
     }
@@ -185,7 +207,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (saveBtn) {
         saveBtn.addEventListener('click', async () => {
-            // Coleta de dados...
             const responsible = document.getElementById('responsible').value;
             const password = document.getElementById('password').value;
             const startDate = startDateInput.value;
@@ -195,7 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const amigaMessage = document.getElementById('amigaMessage').value;
             const marmitaMessage = document.getElementById('marmitaMessage').value;
 
-            // Validações...
             if (!responsible || !password) return alert('Por favor, preencha o responsável e a senha.');
             if (selectedDays.size === 0) return alert('Por favor, selecione ao menos um dia da semana.');
             if (!isPermanent && (!startDate || !endDate)) return alert('Selecione as datas de início e fim para uma alteração temporária.');
@@ -232,11 +252,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert(result.message);
                 logs.unshift(newLog);
                 
-                if (isPermanent) {
-                    currentPrices = result.updatedPrices;
-                }
+                // Força a busca dos preços mais recentes do servidor após salvar
+                await fetchCurrentPrices();
                 resetForm();
-                renderCurrentPrices();
 
             } catch (error) {
                 console.error('Erro ao salvar preços:', error);
