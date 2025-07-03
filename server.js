@@ -1,6 +1,6 @@
 const express = require('express');
 const fs = require('fs').promises;
-const path = 'path';
+const path = require('path'); // <--- LINHA CORRETA
 const { v4: uuidv4 } = require('uuid'); // Usaremos para dar um ID único a cada alteração temporária
 const app = express();
 const PORT = 3000;
