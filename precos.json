@@ -1,50 +1,13 @@
 {
     "dias": {
-      "segunda": {
-        "player": { "manha": 29.99, "tarde": 32.99, "noite": 35.99 },
-        "amiga": { "manha": 35.99, "tarde": 49.99, "noite": 54.99, "message": "*Necessário ativar cupons" },
-        "marmita": { "manha": 49.99, "tarde": 59.99, "noite": 69.99, "message": "*Necessário ativar cupons" }
-      },
-      "terca": {
-        "player": { "manha": 29.99, "tarde": 32.99, "noite": 35.99 },
-        "amiga": { "manha": 35.99, "tarde": 49.99, "noite": 54.99, "message": "*Necessário ativar cupons" },
-        "marmita": { "manha": 49.99, "tarde": 59.99, "noite": 69.99, "message": "*Necessário ativar cupons" }
-      },
-      "quarta": {
-          "player": { "manha": 29.99, "tarde": 32.99, "noite": 35.99 },
-          "amiga": { "manha": 35.99, "tarde": 49.99, "noite": 54.99, "message": "*Necessário ativar cupons" },
-          "marmita": { "manha": 49.99, "tarde": 59.99, "noite": 69.99, "message": "*Necessário ativar cupons" }
-      },
-      "quinta": {
-          "player": { "manha": 29.99, "tarde": 32.99, "noite": 53.99 },
-          "amiga": { "manha": 35.99, "tarde": 49.99, "noite": 107.98, "message": "*Necessário ativar cupons" },
-          "marmita": { "manha": 49.99, "tarde": 59.99, "noite": 161.97, "message": "*Necessário ativar cupons" }
-      },
-      "sexta": {
-          "player": { "manha": 29.99, "tarde": 32.99, "noite": 35.99 },
-          "amiga": { "manha": 35.99, "tarde": 49.99, "noite": 54.99, "message": "*Necessário ativar cupons" },
-          "marmita": { "manha": 49.99, "tarde": 59.99, "noite": 69.99, "message": "*Necessário ativar cupons" }
-      },
-      "sabado": {
-          "player": { "manha": 34.99, "tarde": 49.99, "noite": 53.99 },
-          "amiga": { "manha": 58.99, "tarde": 79.99, "noite": 89.99, "message": "*Necessário ativar cupons" },
-          "marmita": { "manha": 79.99, "tarde": 109.99, "noite": 119.99, "message": "*Necessário ativar cupons" }
-      },
-      "domingo": {
-          "player": { "manha": 34.99, "tarde": 49.99, "noite": 53.99 },
-          "amiga": { "manha": 58.99, "tarde": 79.99, "noite": 89.99, "message": "*Necessário ativar cupons" },
-          "marmita": { "manha": 79.99, "tarde": 109.99, "noite": 119.99, "message": "*Necessário ativar cupons" }
-      },
-      "feriados": {
-          "player": { "manha": 34.99, "tarde": 49.99, "noite": 53.99 },
-          "amiga": { "manha": 58.99, "tarde": 79.99, "noite": 89.99, "message": "*Necessário ativar cupons" },
-          "marmita": { "manha": 79.99, "tarde": 109.99, "noite": 119.99, "message": "*Necessário ativar cupons" }
-      }
+        "segunda": { "prices": { "player": { "manha": 29.99, "tarde": 32.99, "noite": 35.99 }, "amiga": { "manha": 35.99, "tarde": 49.99, "noite": 54.99 }, "marmita": { "manha": 49.99, "tarde": 59.99, "noite": 69.99 } }, "messages": { "amiga": { "message": "*Cupom necessário" }, "marmita": { "message": "*Cupom necessário" } } },
+        "terca":   { "prices": { "player": { "manha": 29.99, "tarde": 32.99, "noite": 35.99 }, "amiga": { "manha": 35.99, "tarde": 49.99, "noite": 54.99 }, "marmita": { "manha": 49.99, "tarde": 59.99, "noite": 69.99 } }, "messages": { "amiga": { "message": "*Cupom necessário" }, "marmita": { "message": "*Cupom necessário" } } },
+        "quarta":  { "prices": { "player": { "manha": 29.99, "tarde": 32.99, "noite": 35.99 }, "amiga": { "manha": 35.99, "tarde": 49.99, "noite": 54.99 }, "marmita": { "manha": 49.99, "tarde": 59.99, "noite": 69.99 } }, "messages": { "amiga": { "message": "*Cupom necessário" }, "marmita": { "message": "*Cupom necessário" } } },
+        "quinta":  { "prices": { "player": { "manha": 29.99, "tarde": 32.99, "noite": 53.99 }, "amiga": { "manha": 35.99, "tarde": 49.99, "noite": 107.98 }, "marmita": { "manha": 49.99, "tarde": 59.99, "noite": 161.97 } }, "messages": { "amiga": { "message": "*Cupom necessário" }, "marmita": { "message": "*Cupom necessário" } } },
+        "sexta":   { "prices": { "player": { "manha": 29.99, "tarde": 32.99, "noite": 35.99 }, "amiga": { "manha": 35.99, "tarde": 49.99, "noite": 54.99 }, "marmita": { "manha": 49.99, "tarde": 59.99, "noite": 69.99 } }, "messages": { "amiga": { "message": "*Cupom necessário" }, "marmita": { "message": "*Cupom necessário" } } },
+        "sabado":  { "prices": { "player": { "manha": 34.99, "tarde": 49.99, "noite": 53.99 }, "amiga": { "manha": 58.99, "tarde": 79.99, "noite": 89.99 }, "marmita": { "manha": 79.99, "tarde": 109.99, "noite": 119.99 } }, "messages": { "amiga": { "message": "*Cupom necessário" }, "marmita": { "message": "*Cupom necessário" } } },
+        "domingo": { "prices": { "player": { "manha": 34.99, "tarde": 49.99, "noite": 53.99 }, "amiga": { "manha": 58.99, "tarde": 79.99, "noite": 89.99 }, "marmita": { "manha": 79.99, "tarde": 109.99, "noite": 119.99 } }, "messages": { "amiga": { "message": "*Cupom necessário" }, "marmita": { "message": "*Cupom necessário" } } },
+        "feriados":{ "prices": { "player": { "manha": 34.99, "tarde": 49.99, "noite": 53.99 }, "amiga": { "manha": 58.99, "tarde": 79.99, "noite": 89.99 }, "marmita": { "manha": 79.99, "tarde": 109.99, "noite": 119.99 } }, "messages": { "amiga": { "message": "*Cupom necessário" }, "marmita": { "message": "*Cupom necessário" } } }
     },
-    "feriados": [
-      "01-01-2025",
-      "04-03-2025",
-      "01-05-2025",
-      "25-12-2025"
-    ]
-  }
+    "feriados": [ "01-01-2025", "04-03-2025", "01-05-2025", "25-12-2025" ]
+}
