@@ -1,21 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
     let pricingData = {};
 
-    // Função para buscar os dados de preços da nossa API
     async function fetchPricingData() {
         try {
-            // ⭐ MUDANÇA PRINCIPAL AQUI ⭐
-            // Pede os preços para a nossa API, não para um arquivo estático.
             const response = await fetch('/api/prices'); 
-            
             if (!response.ok) {
-                throw new Error('Não foi possível carregar os dados de preços do servidor.');
+                const errorText = await response.text();
+                throw new Error(`Servidor respondeu com erro: ${response.status}. Detalhes: ${errorText}`);
             }
             pricingData = await response.json();
-            updateInterface(); // Atualiza a interface assim que os dados são carregados
+            updateInterface();
         } catch (error) {
-            console.error(error);
-            // Você pode adicionar uma mensagem de erro na tela aqui, se quiser
+            console.error("Erro detalhado ao buscar preços:", error);
         }
     }
 
@@ -46,9 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updatePrices(day, period) {
-        // Verifica se os dados existem na estrutura correta
         if (!pricingData.dias || !pricingData.dias[day] || !pricingData.dias[day].prices) {
-            console.error(`Dados de preços não encontrados para: ${day}`);
+            console.error(`Dados de preços não encontrados para o dia: ${day}`);
             return;
         }
 
@@ -57,30 +52,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         priceCards.forEach(card => {
             const titleElement = card.querySelector('h3');
-            // Remove espaços e acentos para uma chave mais confiável
-            const type = titleElement.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(' ', '');
+            const type = titleElement.textContent.toLowerCase().replace(/\s+/g, ''); // 'player', 'moamiga', 'marmita'
             
             let key;
             if (type.includes('player')) key = 'player';
-            else if (type.includes('amiga')) key = 'amiga';
+            else if (type.includes('moamiga')) key = 'amiga';
             else if (type.includes('marmita')) key = 'marmita';
 
-            // Pega o preço para o período correto
-            const priceValue = dayData.prices[key] ? dayData.prices[key][period] : undefined;
-
-            if (priceValue !== undefined) {
-                card.querySelector('.price').textContent = priceValue.toFixed(2);
+            if (!key || !dayData.prices[key] || dayData.prices[key][period] === undefined) {
+                 card.querySelector('.price').textContent = '--';
+                 return;
             }
 
-            // Atualiza a mensagem
+            const priceValue = dayData.prices[key][period];
+            card.querySelector('.price').textContent = priceValue.toFixed(2);
+            
             const featuresList = card.querySelector('.price-features');
             let messageItem = featuresList.querySelector('.dynamic-message');
-            
-            // Remove a mensagem antiga se existir
             if (messageItem) messageItem.remove();
 
-            // Adiciona a nova mensagem se aplicável
-            if ((key === 'amiga' || key === 'marmita') && dayData.messages[key] && dayData.messages[key].message) {
+            // ⭐ CORREÇÃO: Acessa o objeto 'messages' que vem do servidor
+            if ((key === 'amiga' || key === 'marmita') && dayData.messages && dayData.messages[key] && dayData.messages[key].message) {
                  const newListItem = document.createElement('li');
                  newListItem.className = 'dynamic-message';
                  newListItem.textContent = dayData.messages[key].message;
@@ -90,7 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateInterface() {
-        if (!pricingData || Object.keys(pricingData).length === 0) return;
+        if (!pricingData || !pricingData.dias) {
+            console.error("Dados de preços inválidos ou vazios recebidos do servidor.");
+            return;
+        }
 
         const currentDay = getCurrentDay();
         const currentPeriod = getCurrentPeriod();
@@ -127,6 +122,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Inicia o processo
     fetchPricingData(); 
 });
