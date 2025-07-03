@@ -2,8 +2,13 @@ const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
+const http = require('http');
+const { Server } = require("socket.io");
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
@@ -13,10 +18,9 @@ app.use(express.static(__dirname));
 const dataPath = '/data';
 const pricesFilePath = path.join(dataPath, 'precos.json');
 const overridesFilePath = path.join(dataPath, 'overrides.json');
-// ⭐ NOVO: Caminho para o nosso arquivo de log permanente
-const logsFilePath = path.join(dataPath, 'logs.json');
+const logsFilePath = path.join(dataPath, 'logs.json'); 
 
-// --- DADOS PADRÃO ---
+// --- DADOS PADRÃO E INICIALIZAÇÃO ---
 const defaultPrices = {
     dias: {
         segunda: { prices: { player: { manha: 29.99, tarde: 32.99, noite: 35.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 54.99 }, marmita: { manha: 49.99, tarde: 59.99, noite: 69.99 } }, messages: { amiga: { message: "*Cupom necessário" }, marmita: { message: "*Cupom necessário" } } },
@@ -31,7 +35,6 @@ const defaultPrices = {
     feriados: [ "01-01-2025", "04-03-2025", "01-05-2025", "25-12-2025" ]
 };
 
-// ⭐ FUNÇÃO DE INICIALIZAÇÃO ATUALIZADA
 async function initializeDataFiles() {
     try {
         await fs.access(pricesFilePath);
@@ -45,7 +48,6 @@ async function initializeDataFiles() {
         console.log("overrides.json não encontrado. Criando arquivo padrão...");
         await fs.writeFile(overridesFilePath, JSON.stringify([], null, 2), 'utf8');
     }
-    // ⭐ NOVO: Verifica e cria o arquivo de log se ele não existir
     try {
         await fs.access(logsFilePath);
     } catch (error) {
@@ -54,17 +56,23 @@ async function initializeDataFiles() {
     }
 }
 
+// --- LÓGICA DO SOCKET.IO ---
+io.on('connection', (socket) => {
+  console.log('Uma tela pública se conectou em tempo real:', socket.id);
+  socket.on('disconnect', () => {
+    console.log('Uma tela pública desconectou:', socket.id);
+  });
+});
 
 // --- ROTAS DA API ---
 
-// ⭐ ROTA POST (SALVAR) MODIFICADA PARA ESCREVER O LOG
+// ROTA PARA SALVAR PREÇOS (POST)
 app.post('/api/prices', async (req, res) => {
     const { password, days, prices, messages, isPermanent, startDate, endDate, responsible, notes } = req.body;
     if (password !== process.env.ADMIN_PASSWORD) {
         return res.status(401).json({ message: "Senha incorreta!" });
     }
 
-    // A lógica de salvar o preço (permanente ou temporário) é executada primeiro.
     try {
         if (isPermanent) {
             const pricesDataRaw = await fs.readFile(pricesFilePath, 'utf8');
@@ -88,22 +96,16 @@ app.post('/api/prices', async (req, res) => {
         return res.status(500).json({ message: "Erro ao salvar a alteração de preço." });
     }
 
-    // ⭐ NOVO: Após salvar o preço com sucesso, registramos o log.
     try {
         const logsDataRaw = await fs.readFile(logsFilePath, 'utf8');
         const logs = JSON.parse(logsDataRaw);
-
-        const newLog = {
-            responsible,
-            timestamp: new Date().toISOString(),
-            days,
-            notes: `(${isPermanent ? 'DEFINITIVA' : 'TEMPORÁRIA'}) ${notes}`
-        };
-        logs.unshift(newLog); // Adiciona o novo log no início da lista
-
+        const newLog = { responsible, timestamp: new Date().toISOString(), days, notes: `(${isPermanent ? 'DEFINITIVA' : 'TEMPORÁRIA'}) ${notes}` };
+        logs.unshift(newLog);
         await fs.writeFile(logsFilePath, JSON.stringify(logs, null, 2));
         
-        // Retorna a resposta de sucesso final
+        io.emit('prices_updated', { message: 'Preços foram atualizados!' });
+        console.log("Aviso 'prices_updated' enviado para todos os clientes.");
+        
         if (isPermanent) {
             const updatedPrices = await fs.readFile(pricesFilePath, 'utf8');
             return res.json({ message: "Preços permanentes atualizados e log salvo!", updatedPrices: JSON.parse(updatedPrices) });
@@ -116,19 +118,7 @@ app.post('/api/prices', async (req, res) => {
     }
 });
 
-// ⭐ NOVA ROTA: GET /api/logs
-// Rota para o painel de admin buscar o histórico de logs.
-app.get('/api/logs', async (req, res) => {
-    try {
-        const logsDataRaw = await fs.readFile(logsFilePath, 'utf8');
-        res.json(JSON.parse(logsDataRaw));
-    } catch (error) {
-        console.error("Erro ao ler o arquivo de logs:", error);
-        res.status(500).json({ message: "Não foi possível carregar o histórico de logs." });
-    }
-});
-
-// ROTA GET (CARREGAR)
+// ROTA PARA BUSCAR PREÇOS (GET)
 app.get('/api/prices', async (req, res) => {
     try {
         const pricesDataRaw = await fs.readFile(pricesFilePath, 'utf8');
@@ -157,7 +147,6 @@ app.get('/api/prices', async (req, res) => {
         activeOverrides.forEach(override => {
             override.days.forEach(day => {
                 if (finalPrices.dias && finalPrices.dias[day]) {
-                    // Mescla os preços e as mensagens do override sobre os preços base
                     Object.assign(finalPrices.dias[day].prices, override.prices);
                     Object.assign(finalPrices.dias[day].messages, override.messages);
                 }
@@ -165,15 +154,25 @@ app.get('/api/prices', async (req, res) => {
         });
 
         res.json(finalPrices);
-
     } catch (error) {
         console.error("Erro detalhado na rota GET /api/prices:", error);
         res.status(500).json({ message: "Erro ao ler os arquivos de preços no servidor." });
     }
 });
 
+// ROTA PARA BUSCAR LOGS (GET)
+app.get('/api/logs', async (req, res) => {
+    try {
+        const logsDataRaw = await fs.readFile(logsFilePath, 'utf8');
+        res.json(JSON.parse(logsDataRaw));
+    } catch (error) {
+        console.error("Erro ao ler o arquivo de logs:", error);
+        res.status(500).json({ message: "Não foi possível carregar o histórico de logs." });
+    }
+});
+
 // --- INICIALIZAÇÃO DO SERVIDOR ---
-app.listen(PORT, async () => {
+server.listen(PORT, async () => {
     console.log(`Servidor rodando na porta ${PORT}`);
     await initializeDataFiles();
 });
