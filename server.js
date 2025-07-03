@@ -71,7 +71,24 @@ app.post('/api/prices', async (req, res) => {
         try {
             const overridesDataRaw = await fs.readFile(overridesFilePath, 'utf8');
             const overrides = JSON.parse(overridesDataRaw);
-            const newOverride = { id: uuidv4(), startDate, endDate, days, prices, messages, responsible, notes, createdAt: new Date().toISOString() };
+            const newOverride = {
+  id: uuidv4(),
+  startDate,
+  endDate,
+  days,
+  prices: {
+    player: prices?.player || {},
+    amiga: prices?.amiga || {},
+    marmita: prices?.marmita || {},
+  },
+  messages: {
+    amiga: messages?.amiga || {},
+    marmita: messages?.marmita || {},
+  },
+  responsible,
+  notes,
+  createdAt: new Date().toISOString()
+};
             overrides.push(newOverride);
             await fs.writeFile(overridesFilePath, JSON.stringify(overrides, null, 2));
             return res.json({ message: "Alteração temporária salva com sucesso!" });

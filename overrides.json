@@ -1,1 +1,34 @@
-[]
+{
+  "id": "f3a9c3de-77aa-4e61-bc7e-bd9c9c99c999",
+  "startDate": "2025-07-01",
+  "endDate": "2025-07-07",
+  "days": ["quinta", "sexta", "sabado"],
+  "prices": {
+    "player": {
+      "manha": 25.00,
+      "tarde": 30.00,
+      "noite": 45.00
+    },
+    "amiga": {
+      "manha": 40.00,
+      "tarde": 60.00,
+      "noite": 80.00
+    },
+    "marmita": {
+      "manha": 60.00,
+      "tarde": 90.00,
+      "noite": 120.00
+    }
+  },
+  "messages": {
+    "amiga": {
+      "message": "*Promoção válida com pulseira rosa"
+    },
+    "marmita": {
+      "message": "*Válido apenas até 01h"
+    }
+  },
+  "responsible": "Admin - Matteus",
+  "notes": "Semana especial de férias",
+  "createdAt": "2025-06-30T22:00:00.000Z"
+}
