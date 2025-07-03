@@ -446,9 +446,8 @@ body::after {
 .modal-header {
     padding: 24px;
     border-bottom: 1px solid rgba(245, 166, 35, 0.15);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: flex; /* Adicionado */
+    align-items: center; /* Adicionado */
 }
 
 .modal-title {

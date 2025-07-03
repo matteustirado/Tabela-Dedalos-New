@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const showLogsBtn = document.getElementById('showLogsBtn');
     const logsModal = document.getElementById('logsModal');
     const closeLogsModal = document.getElementById('closeLogsModal');
+    const downloadLogsBtn = document.getElementById('downloadLogsBtn');
     const dayOptions = document.querySelectorAll('.day-option');
     const permanentChangeCheckbox = document.getElementById('permanentChange');
     const startDateInput = document.getElementById('startDate');
@@ -15,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- VARIÁVEIS DE ESTADO ---
     let selectedDays = new Set();
-    let logs = []; // Armazena os logs localmente
+    let logs = []; // Cache local para TODOS os logs buscados do servidor
     let currentPrices = {};
 
     // --- FUNÇÕES ---
@@ -35,8 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Não foi possível carregar os preços atuais. Verifique o console do navegador.');
         }
     }
-
-    // FUNÇÕES AUXILIARES DE DATA
+    
     function isHoliday(date) {
         if (!currentPrices.feriados) return false;
         const currentDate = String(date.getDate()).padStart(2, '0') + '-' +
@@ -47,15 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getCurrentDay() {
         const now = new Date();
-        if (isHoliday(now)) {
-            return 'feriados';
-        }
+        if (isHoliday(now)) { return 'feriados'; }
         const dayIndex = now.getDay();
         const days = ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'];
         return days[dayIndex];
     }
 
-    // FUNÇÃO MODIFICADA PARA EXIBIR PREÇOS DINAMICAMENTE
     function renderCurrentPrices() {
         if (!currentPricesContainer || !currentPrices.dias) return;
         
@@ -89,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <p style="font-size: 0.8rem; color: #888; text-align: center; margin-top: 1rem;">*Exibindo preços atuais de ${displayName}.</p>`;
     }
 
-    // Esta função continua usando segunda-feira como base para preencher o formulário
     function populatePriceInputs() {
         if (!currentPrices.dias) return;
         const referenceDay = currentPrices.dias.segunda;
@@ -102,30 +98,74 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.value = referenceDay.prices[type][period].toFixed(2);
             }
         });
+
         document.getElementById('amigaMessage').value = referenceDay.messages.amiga.message || '';
         document.getElementById('marmitaMessage').value = referenceDay.messages.marmita.message || '';
     }
     
+    async function fetchLogs() {
+        try {
+            const response = await fetch('/api/logs');
+            if (!response.ok) { throw new Error("Falha ao buscar logs do servidor."); }
+            logs = await response.json();
+            renderLogs();
+        } catch (error) {
+            console.error(error);
+            logsContainer.innerHTML = `<p style="color: red;">${error.message}</p>`;
+        }
+    }
+
     function renderLogs() {
         logsContainer.innerHTML = '';
-        if (logs.length === 0) {
-            logsContainer.innerHTML = '<p>Nenhum log de alteração encontrado.</p>';
+
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+
+        const monthlyLogs = logs.filter(log => {
+            const logDate = new Date(log.timestamp);
+            return logDate.getMonth() === currentMonth && logDate.getFullYear() === currentYear;
+        });
+
+        if (monthlyLogs.length === 0) {
+            logsContainer.innerHTML = '<p>Nenhum log de alteração encontrado para este mês.</p>';
             return;
         }
-        logs.forEach(log => {
+
+        monthlyLogs.forEach(log => {
             const logEntryDiv = document.createElement('div');
             logEntryDiv.className = 'log-entry';
             logEntryDiv.innerHTML = `
                 <div class="log-header">
                     <h4 class="log-title">Alteração para: ${log.days.join(', ')}</h4>
                     <p class="log-meta">Responsável: ${log.responsible}</p>
-                    <p class="log-meta">Data: ${log.timestamp}</p>
+                    <p class="log-meta">Data: ${new Date(log.timestamp).toLocaleString('pt-BR')}</p>
                 </div>
                 <div class="log-details">
                      <p><strong>Observação:</strong> ${log.notes || 'Nenhuma'}</p>
                 </div>`;
             logsContainer.appendChild(logEntryDiv);
         });
+    }
+    
+    function downloadFullLogs() {
+        if (!logs || logs.length === 0) {
+            alert("Não há logs para baixar. Abra o histórico primeiro.");
+            return;
+        }
+        
+        const logText = JSON.stringify(logs, null, 2);
+        const blob = new Blob([logText], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        
+        a.href = url;
+        a.download = `historico_completo_tabela_de_precos.json`;
+        document.body.appendChild(a);
+        a.click();
+        
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     }
 
     function resetForm() {
@@ -150,8 +190,9 @@ document.addEventListener('DOMContentLoaded', () => {
         showLogsBtn.addEventListener('click', () => {
             const password = prompt("Para ver os logs, por favor, digite a senha:");
             if (password === "adminlog") {
-                renderLogs();
                 logsModal.classList.remove('hidden');
+                logsContainer.innerHTML = "<p>Carregando histórico...</p>";
+                fetchLogs();
             } else if (password !== null) {
                 alert("Senha incorreta!");
             }
@@ -162,6 +203,10 @@ document.addEventListener('DOMContentLoaded', () => {
         closeLogsModal.addEventListener('click', () => {
             logsModal.classList.add('hidden');
         });
+    }
+    
+    if (downloadLogsBtn) {
+        downloadLogsBtn.addEventListener('click', downloadFullLogs);
     }
 
     calendarIcons.forEach(icon => {
@@ -234,12 +279,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 isPermanent, startDate, endDate, responsible, notes
             };
             
-            const newLog = {
-                responsible, timestamp: new Date().toLocaleString('pt-BR'),
-                days: Array.from(selectedDays),
-                notes: `(${isPermanent ? 'DEFINITIVA' : 'TEMPORÁRIA'}) ${notes}`
-            };
-
             try {
                 const response = await fetch('/api/prices', {
                     method: 'POST',
@@ -250,9 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!response.ok) throw new Error(result.message || 'Falha ao salvar os preços.');
                 
                 alert(result.message);
-                logs.unshift(newLog);
                 
-                // Força a busca dos preços mais recentes do servidor após salvar
                 await fetchCurrentPrices();
                 resetForm();
 

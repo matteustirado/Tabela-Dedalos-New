@@ -52,12 +52,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         priceCards.forEach(card => {
             const titleElement = card.querySelector('h3');
-            const type = titleElement.textContent.toLowerCase().replace(/\s+/g, ''); // 'player', 'moamiga', 'marmita'
+            
+            // ⭐ 1. CORREÇÃO: Normaliza o texto para remover espaços E acentos.
+            const type = titleElement.textContent
+                .toLowerCase()
+                .normalize("NFD") // Separa os acentos das letras
+                .replace(/[\u0300-\u036f]/g, "") // Remove os acentos
+                .replace(/\s+/g, ''); // Remove os espaços
             
             let key;
-            if (type.includes('player')) key = 'player';
-            else if (type.includes('moamiga')) key = 'amiga';
-            else if (type.includes('marmita')) key = 'marmita';
+
+            // ⭐ 2. CORREÇÃO: Verifica o texto normalizado ("maoamiga" em vez de "moamiga")
+            if (type === 'player') key = 'player';
+            else if (type === 'maoamiga') key = 'amiga';
+            else if (type === 'marmita') key = 'marmita';
 
             if (!key || !dayData.prices[key] || dayData.prices[key][period] === undefined) {
                  card.querySelector('.price').textContent = '--';
@@ -71,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
             let messageItem = featuresList.querySelector('.dynamic-message');
             if (messageItem) messageItem.remove();
 
-            // ⭐ CORREÇÃO: Acessa o objeto 'messages' que vem do servidor
             if ((key === 'amiga' || key === 'marmita') && dayData.messages && dayData.messages[key] && dayData.messages[key].message) {
                  const newListItem = document.createElement('li');
                  newListItem.className = 'dynamic-message';
@@ -101,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePrices(currentDay, currentPeriod);
     }
 
-    // --- Event Listeners ---
+    // Event Listeners (não precisam de alteração)
     document.querySelectorAll('.tab-button').forEach(button => {
         button.addEventListener('click', () => {
             const selectedDay = button.dataset.tab;
