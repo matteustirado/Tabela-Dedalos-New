@@ -1,22 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
     let pricingData = {};
 
-    // Função para buscar os dados de preços do arquivo JSON
+    // Função para buscar os dados de preços da nossa API
     async function fetchPricingData() {
         try {
-            const response = await fetch('precos.json');
+            // ⭐ MUDANÇA PRINCIPAL AQUI ⭐
+            // Pede os preços para a nossa API, não para um arquivo estático.
+            const response = await fetch('/api/prices'); 
+            
             if (!response.ok) {
-                throw new Error('Não foi possível carregar os dados de preços.');
+                throw new Error('Não foi possível carregar os dados de preços do servidor.');
             }
             pricingData = await response.json();
             updateInterface(); // Atualiza a interface assim que os dados são carregados
         } catch (error) {
             console.error(error);
-            // Exibir uma mensagem de erro para o usuário, se desejar
+            // Você pode adicionar uma mensagem de erro na tela aqui, se quiser
         }
     }
 
     function isHoliday(date) {
+        if (!pricingData.feriados) return false;
         const currentDate = String(date.getDate()).padStart(2, '0') + '-' +
                               String(date.getMonth() + 1).padStart(2, '0') + '-' +
                               date.getFullYear();
@@ -42,43 +46,52 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updatePrices(day, period) {
-        if (!pricingData.dias || !pricingData.dias[day] || !pricingData.dias[day][period]) {
-            console.error(`Dados de preços não encontrados para: ${day}, ${period}`);
+        // Verifica se os dados existem na estrutura correta
+        if (!pricingData.dias || !pricingData.dias[day] || !pricingData.dias[day].prices) {
+            console.error(`Dados de preços não encontrados para: ${day}`);
             return;
         }
 
-        const prices = pricingData.dias[day][period];
+        const dayData = pricingData.dias[day];
         const priceCards = document.querySelectorAll('.price-card');
 
         priceCards.forEach(card => {
             const titleElement = card.querySelector('h3');
-            const type = titleElement.textContent.toLowerCase().replace(' ', ''); // 'player', 'moamiga', 'marmita'
+            // Remove espaços e acentos para uma chave mais confiável
+            const type = titleElement.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(' ', '');
             
             let key;
             if (type.includes('player')) key = 'player';
             else if (type.includes('amiga')) key = 'amiga';
             else if (type.includes('marmita')) key = 'marmita';
 
-            if (prices[key] !== undefined) {
-                card.querySelector('.price').textContent = prices[key].toFixed(2);
+            // Pega o preço para o período correto
+            const priceValue = dayData.prices[key] ? dayData.prices[key][period] : undefined;
+
+            if (priceValue !== undefined) {
+                card.querySelector('.price').textContent = priceValue.toFixed(2);
             }
 
+            // Atualiza a mensagem
             const featuresList = card.querySelector('.price-features');
-            const messageItem = featuresList.querySelector('.dynamic-message');
-            if (messageItem) {
-                messageItem.remove();
-            }
+            let messageItem = featuresList.querySelector('.dynamic-message');
+            
+            // Remove a mensagem antiga se existir
+            if (messageItem) messageItem.remove();
 
-            if ((key === 'amiga' || key === 'marmita') && pricingData.dias[day].amiga.message) {
+            // Adiciona a nova mensagem se aplicável
+            if ((key === 'amiga' || key === 'marmita') && dayData.messages[key] && dayData.messages[key].message) {
                  const newListItem = document.createElement('li');
                  newListItem.className = 'dynamic-message';
-                 newListItem.textContent = pricingData.dias[day].amiga.message;
+                 newListItem.textContent = dayData.messages[key].message;
                  featuresList.appendChild(newListItem);
             }
         });
     }
 
     function updateInterface() {
+        if (!pricingData || Object.keys(pricingData).length === 0) return;
+
         const currentDay = getCurrentDay();
         const currentPeriod = getCurrentPeriod();
 
@@ -93,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePrices(currentDay, currentPeriod);
     }
 
+    // --- Event Listeners ---
     document.querySelectorAll('.tab-button').forEach(button => {
         button.addEventListener('click', () => {
             const selectedDay = button.dataset.tab;
@@ -113,5 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    fetchPricingData(); // Inicia o processo
+    // Inicia o processo
+    fetchPricingData(); 
 });
