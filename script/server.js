@@ -11,8 +11,9 @@ const PORT = 3000;
 app.use(express.json());
 app.use(express.static(__dirname));
 
-const pricesFilePath = path.join(__dirname, 'precos.json');
-const overridesFilePath = path.join(__dirname, 'overrides.json');
+const dataPath = '/data';
+const pricesFilePath = path.join(dataPath, 'precos.json');
+const overridesFilePath = path.join(dataPath, 'overrides.json');
 
 // ROTA POST (SALVAR): Agora decide onde salvar a alteração
 app.post('/api/prices', async (req, res) => {
