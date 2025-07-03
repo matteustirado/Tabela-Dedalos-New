@@ -17,14 +17,14 @@ const overridesFilePath = path.join(dataPath, 'overrides.json');
 // ⭐ NOVO: Estrutura de preços padrão para criar o arquivo se ele não existir
 const defaultPrices = {
     dias: {
-        segunda: { player: { manha: 29.99, tarde: 32.99, noite: 35.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 54.99, message: "*Cupom necessário" }, marmita: { manha: 49.99, tarde: 59.99, noite: 69.99, message: "*Cupom necessário" } },
-        terca:   { player: { manha: 29.99, tarde: 32.99, noite: 35.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 54.99, message: "*Cupom necessário" }, marmita: { manha: 49.99, tarde: 59.99, noite: 69.99, message: "*Cupom necessário" } },
-        quarta:  { player: { manha: 29.99, tarde: 32.99, noite: 35.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 54.99, message: "*Cupom necessário" }, marmita: { manha: 49.99, tarde: 59.99, noite: 69.99, message: "*Cupom necessário" } },
-        quinta:  { player: { manha: 29.99, tarde: 32.99, noite: 53.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 107.98, message: "*Cupom necessário" }, marmita: { manha: 49.99, tarde: 59.99, noite: 161.97, message: "*Cupom necessário" } },
-        sexta:   { player: { manha: 29.99, tarde: 32.99, noite: 35.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 54.99, message: "*Cupom necessário" }, marmita: { manha: 49.99, tarde: 59.99, noite: 69.99, message: "*Cupom necessário" } },
-        sabado:  { player: { manha: 34.99, tarde: 49.99, noite: 53.99 }, amiga: { manha: 58.99, tarde: 79.99, noite: 89.99, message: "*Cupom necessário" }, marmita: { manha: 79.99, tarde: 109.99, noite: 119.99, message: "*Cupom necessário" } },
-        domingo: { player: { manha: 34.99, tarde: 49.99, noite: 53.99 }, amiga: { manha: 58.99, tarde: 79.99, noite: 89.99, message: "*Cupom necessário" }, marmita: { manha: 79.99, tarde: 109.99, noite: 119.99, message: "*Cupom necessário" } },
-        feriados:{ player: { manha: 34.99, tarde: 49.99, noite: 53.99 }, amiga: { manha: 58.99, tarde: 79.99, noite: 89.99, message: "*Cupom necessário" }, marmita: { manha: 79.99, tarde: 109.99, noite: 119.99, message: "*Cupom necessário" } }
+        segunda: { player: { manha: 29.99, tarde: 32.99, noite: 35.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 54.99, message: "*Necessario retirar cupom no site" }, marmita: { manha: 49.99, tarde: 59.99, noite: 69.99, message: "*Necessario retirar cupom no site" } },
+        terca:   { player: { manha: 29.99, tarde: 32.99, noite: 35.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 54.99, message: "*Necessario retirar cupom no site" }, marmita: { manha: 49.99, tarde: 59.99, noite: 69.99, message: "*Necessario retirar cupom no site" } },
+        quarta:  { player: { manha: 29.99, tarde: 32.99, noite: 35.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 54.99, message: "*Necessario retirar cupom no site" }, marmita: { manha: 49.99, tarde: 59.99, noite: 69.99, message: "*Necessario retirar cupom no site" } },
+        quinta:  { player: { manha: 29.99, tarde: 32.99, noite: 53.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 107.98, message: "*Necessario retirar cupom no site" }, marmita: { manha: 49.99, tarde: 59.99, noite: 161.97, message: "*Necessario retirar cupom no site" } },
+        sexta:   { player: { manha: 29.99, tarde: 32.99, noite: 35.99 }, amiga: { manha: 35.99, tarde: 49.99, noite: 54.99, message: "*Necessario retirar cupom no site" }, marmita: { manha: 49.99, tarde: 59.99, noite: 69.99, message: "*Necessario retirar cupom no site" } },
+        sabado:  { player: { manha: 34.99, tarde: 49.99, noite: 53.99 }, amiga: { manha: 58.99, tarde: 79.99, noite: 89.99, message: "*Necessario retirar cupom no site" }, marmita: { manha: 79.99, tarde: 109.99, noite: 119.99, message: "*Necessario retirar cupom no site" } },
+        domingo: { player: { manha: 34.99, tarde: 49.99, noite: 53.99 }, amiga: { manha: 58.99, tarde: 79.99, noite: 89.99, message: "*Necessario retirar cupom no site" }, marmita: { manha: 79.99, tarde: 109.99, noite: 119.99, message: "*Necessario retirar cupom no site" } },
+        feriados:{ player: { manha: 34.99, tarde: 49.99, noite: 53.99 }, amiga: { manha: 58.99, tarde: 79.99, noite: 89.99, message: "*Necessario retirar cupom no site" }, marmita: { manha: 79.99, tarde: 109.99, noite: 119.99, message: "*Necessario retirar cupom no site" } }
     },
     feriados: [ "01-01-2025", "04-03-2025", "01-05-2025", "25-12-2025" ]
 };
